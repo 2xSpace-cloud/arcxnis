@@ -1,0 +1,214 @@
+{
+  "ordre_royal": [
+    {
+      "id": "royal_patrol",
+      "title": "Patrouille Royale",
+      "description": "Effectuez une patrouille dans les terres du royaume pour assurer la sécurité des citoyens.",
+      "duration": 20,
+      "difficulty": "facile",
+      "requirements": {
+        "minLevel": 1,
+        "faction": "ordre_royal"
+      },
+      "rewards": {
+        "experience": 50,
+        "gold": 30,
+        "reputation": 10,
+        "items": ["epee_longue"]
+      }
+    },
+    {
+      "id": "royal_defense",
+      "title": "Défense du Château",
+      "description": "Protégez le château royal contre une attaque imminente.",
+      "duration": 35,
+      "difficulty": "moyen",
+      "requirements": {
+        "minLevel": 3,
+        "faction": "ordre_royal"
+      },
+      "rewards": {
+        "experience": 100,
+        "gold": 60,
+        "reputation": 20,
+        "items": ["bouclier_royal"]
+      }
+    },
+    {
+      "id": "royal_justice",
+      "title": "Justice Royale",
+      "description": "Traquez et capturez un criminel recherché par la couronne.",
+      "duration": 45,
+      "difficulty": "difficile",
+      "requirements": {
+        "minLevel": 5,
+        "faction": "ordre_royal"
+      },
+      "rewards": {
+        "experience": 150,
+        "gold": 100,
+        "reputation": 30,
+        "items": ["armure_royale"]
+      }
+    }
+  ],
+  "guilde_ombres": [
+    {
+      "id": "shadow_espionage",
+      "title": "Mission d'Espionnage",
+      "description": "Infiltrez le manoir d'un noble et collectez des informations compromettantes.",
+      "duration": 25,
+      "difficulty": "facile",
+      "requirements": {
+        "minLevel": 1,
+        "faction": "guilde_ombres"
+      },
+      "rewards": {
+        "experience": 45,
+        "gold": 40,
+        "reputation": 10,
+        "items": ["dague_empoisonnee"]
+      }
+    },
+    {
+      "id": "shadow_assassination",
+      "title": "Contrat d'Élimination",
+      "description": "Éliminez discrètement une cible désignée par la guilde.",
+      "duration": 40,
+      "difficulty": "moyen",
+      "requirements": {
+        "minLevel": 4,
+        "faction": "guilde_ombres"
+      },
+      "rewards": {
+        "experience": 120,
+        "gold": 80,
+        "reputation": 25,
+        "items": ["cape_ombre"]
+      }
+    },
+    {
+      "id": "shadow_heist",
+      "title": "Le Grand Braquage",
+      "description": "Organisez et exécutez le vol du trésor de la banque royale.",
+      "duration": 60,
+      "difficulty": "difficile",
+      "requirements": {
+        "minLevel": 7,
+        "faction": "guilde_ombres"
+      },
+      "rewards": {
+        "experience": 200,
+        "gold": 150,
+        "reputation": 40,
+        "items": ["crochet_maitre", "carte_reseau"]
+      }
+    }
+  ],
+  "cercle_druidique": [
+    {
+      "id": "druid_communion",
+      "title": "Communion avec la Nature",
+      "description": "Méditez dans la forêt ancienne et communiquez avec les esprits de la nature.",
+      "duration": 30,
+      "difficulty": "facile",
+      "requirements": {
+        "minLevel": 1,
+        "faction": "cercle_druidique"
+      },
+      "rewards": {
+        "experience": 40,
+        "gold": 20,
+        "reputation": 15,
+        "items": ["livre_sorts"]
+      }
+    },
+    {
+      "id": "druid_healing",
+      "title": "Guérison de la Forêt Corrompue",
+      "description": "Purifiez une zone de la forêt touchée par une corruption magique.",
+      "duration": 40,
+      "difficulty": "moyen",
+      "requirements": {
+        "minLevel": 3,
+        "faction": "cercle_druidique"
+      },
+      "rewards": {
+        "experience": 110,
+        "gold": 50,
+        "reputation": 25,
+        "items": ["baton_nature"]
+      }
+    },
+    {
+      "id": "druid_guardian",
+      "title": "Éveil du Gardien Ancien",
+      "description": "Réveillez un ancien gardien de la forêt pour protéger le cercle.",
+      "duration": 50,
+      "difficulty": "difficile",
+      "requirements": {
+        "minLevel": 6,
+        "faction": "cercle_druidique"
+      },
+      "rewards": {
+        "experience": 180,
+        "gold": 70,
+        "reputation": 35,
+        "items": ["amulette_nature"]
+      }
+    }
+  ],
+  "academie_arcanique": [
+    {
+      "id": "arcane_research",
+      "title": "Recherche Arcanique",
+      "description": "Étudiez un phénomène magique mystérieux dans la bibliothèque de l'académie.",
+      "duration": 35,
+      "difficulty": "facile",
+      "requirements": {
+        "minLevel": 1,
+        "faction": "academie_arcanique"
+      },
+      "rewards": {
+        "experience": 60,
+        "gold": 25,
+        "reputation": 15,
+        "items": ["grimoire_apprenti"]
+      }
+    },
+    {
+      "id": "arcane_artifact",
+      "title": "Récupération d'Artefact",
+      "description": "Récupérez un artefact magique perdu dans des ruines anciennes.",
+      "duration": 45,
+      "difficulty": "moyen",
+      "requirements": {
+        "minLevel": 4,
+        "faction": "academie_arcanique"
+      },
+      "rewards": {
+        "experience": 130,
+        "gold": 60,
+        "reputation": 25,
+        "items": ["baton_mage"]
+      }
+    },
+    {
+      "id": "arcane_ritual",
+      "title": "Rituel de Puissance",
+      "description": "Participez à un rituel magique complexe pour augmenter votre pouvoir arcanique.",
+      "duration": 55,
+      "difficulty": "difficile",
+      "requirements": {
+        "minLevel": 8,
+        "faction": "academie_arcanique"
+      },
+      "rewards": {
+        "experience": 220,
+        "gold": 80,
+        "reputation": 40,
+        "items": ["orbe_arcanique"]
+      }
+    }
+  ]
+}

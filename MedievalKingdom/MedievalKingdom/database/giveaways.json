@@ -1,0 +1,20 @@
+{
+  "gw_1753966188614_dvfhgiqt4": {
+    "id": "gw_1753966188614_dvfhgiqt4",
+    "messageId": "1400460444539424898",
+    "channelId": "1400459453610066031",
+    "guildId": "1391785998198767616",
+    "hostId": "1094678438918500505",
+    "recompense": "\"100 Gemmes\"",
+    "gagnants": 1,
+    "emoji": "🎉",
+    "conditions": null,
+    "typeRecompense": null,
+    "quantite": null,
+    "itemId": null,
+    "endTime": 1753966248614,
+    "createdAt": 1753966189438,
+    "ended": true,
+    "winners": []
+  }
+}

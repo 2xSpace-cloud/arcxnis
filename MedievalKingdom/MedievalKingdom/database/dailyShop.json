@@ -1,0 +1,79 @@
+{
+  "date": "2026-07-26",
+  "dayOfWeek": 0,
+  "items": [
+    {
+      "id": "coffre_tresor",
+      "name": "Coffre au trésor",
+      "type": "objet",
+      "price": 200,
+      "description": "Contient entre 50 et 200 gemmes aléatoires !",
+      "rarity": "legendary"
+    },
+    {
+      "id": "bouclier_bois",
+      "name": "Bouclier en bois",
+      "type": "armure",
+      "price": 20,
+      "description": "+2 de défense",
+      "rarity": "common"
+    },
+    {
+      "id": "cape_voyageur",
+      "name": "Cape de voyageur",
+      "type": "armure",
+      "price": 35,
+      "description": "+2 de défense, +1 de charisme",
+      "rarity": "common"
+    },
+    {
+      "id": "potion_mana",
+      "name": "Potion de mana",
+      "type": "objet",
+      "price": 15,
+      "description": "Restaure 30 points de mana.",
+      "rarity": "common"
+    },
+    {
+      "id": "bottes_cuir",
+      "name": "Bottes en cuir",
+      "type": "armure",
+      "price": 18,
+      "description": "+1 de défense, +2 de vitesse",
+      "rarity": "common"
+    },
+    {
+      "id": "grande_potion_mana",
+      "name": "Grande potion de mana",
+      "type": "objet",
+      "price": 35,
+      "description": "Restaure 75 points de mana.",
+      "rarity": "uncommon"
+    },
+    {
+      "id": "cape_noble",
+      "name": "Cape de noble",
+      "type": "armure",
+      "price": 90,
+      "description": "+5 de défense, +5 de charisme",
+      "rarity": "uncommon"
+    },
+    {
+      "id": "potion_vitesse",
+      "name": "Potion de vitesse",
+      "type": "objet",
+      "price": 35,
+      "description": "+20% de vitesse pendant 1 heure.",
+      "rarity": "uncommon"
+    },
+    {
+      "id": "bouclier_royal",
+      "name": "Bouclier royal",
+      "type": "armure",
+      "price": 185,
+      "description": "+14 de défense, +15 PV max",
+      "rarity": "rare"
+    }
+  ],
+  "generatedAt": "2026-07-26T13:13:27.887Z"
+}

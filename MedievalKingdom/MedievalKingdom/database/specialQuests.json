@@ -1,0 +1,140 @@
+{
+  "underground_network": [
+    {
+      "id": "catacombs_exploration",
+      "title": "Les Catacombes Oubliées",
+      "description": "Votre carte révèle l'entrée de catacombes anciennes sous la ville. Explorez ces tunnels sombres et découvrez les secrets qu'ils renferment. Des trésors oubliés vous attendent dans les profondeurs.",
+      "duration": 40,
+      "difficulty": "facile",
+      "requirements": {
+        "minLevel": 2,
+        "requiredItem": "carte_reseau"
+      },
+      "rewards": {
+        "experience": 100,
+        "gold": 80,
+        "reputation": 15,
+        "items": ["torche_eternelle", "potion_soin"]
+      }
+    },
+    {
+      "id": "smuggler_route",
+      "title": "Route des Contrebandiers",
+      "description": "Utilisez les passages secrets pour transporter des marchandises illégales à travers la ville. Évitez les gardes et livrez la cargaison au contact de la Guilde des Ombres.",
+      "duration": 50,
+      "difficulty": "moyen",
+      "requirements": {
+        "minLevel": 3,
+        "requiredItem": "carte_reseau"
+      },
+      "rewards": {
+        "experience": 150,
+        "gold": 120,
+        "reputation": 20,
+        "items": ["sac_contrebande", "gants_pickpocket"]
+      }
+    },
+    {
+      "id": "legendary_thief_treasure",
+      "title": "Le Trésor du Voleur Légendaire",
+      "description": "La carte mène au trésor caché du légendaire Maître Voleur Shadowbane. Résolvez les énigmes, déjouez les pièges mortels et réclamez le butin qui a échappé à tous pendant des décennies.",
+      "duration": 60,
+      "difficulty": "difficile",
+      "requirements": {
+        "minLevel": 5,
+        "requiredItem": "carte_reseau"
+      },
+      "rewards": {
+        "experience": 250,
+        "gold": 200,
+        "reputation": 30,
+        "items": ["dague_shadowbane", "couronne_voleur", "grande_potion_soin"]
+      }
+    },
+    {
+      "id": "underground_arena",
+      "title": "L'Arène Clandestine",
+      "description": "Participez aux combats illégaux de l'arène souterraine. Affrontez les champions des bas-fonds et gagnez la reconnaissance du monde criminel. Les paris sont élevés, tout comme les récompenses.",
+      "duration": 45,
+      "difficulty": "moyen",
+      "requirements": {
+        "minLevel": 4,
+        "requiredItem": "carte_reseau"
+      },
+      "rewards": {
+        "experience": 180,
+        "gold": 150,
+        "reputation": 25,
+        "items": ["medaille_champion", "elixir_force"]
+      }
+    },
+    {
+      "id": "spy_network",
+      "title": "Réseau d'Espionnage Souterrain",
+      "description": "Établissez un réseau d'informateurs dans les tunnels sous la ville. Collectez des secrets compromettants sur les nobles et vendez-les au plus offrant. L'information est le pouvoir.",
+      "duration": 55,
+      "difficulty": "difficile",
+      "requirements": {
+        "minLevel": 6,
+        "requiredItem": "carte_reseau"
+      },
+      "rewards": {
+        "experience": 220,
+        "gold": 180,
+        "reputation": 35,
+        "items": ["parchemin_secrets", "cape_espion"]
+      }
+    },
+    {
+      "id": "ancient_vault",
+      "title": "Le Coffre-Fort Ancien",
+      "description": "Votre carte révèle l'emplacement d'un coffre-fort oublié datant de l'ancien royaume. Crochetez les serrures complexes, désamorcez les pièges magiques et accédez aux richesses perdues.",
+      "duration": 50,
+      "difficulty": "difficile",
+      "requirements": {
+        "minLevel": 5,
+        "requiredItem": "carte_reseau"
+      },
+      "rewards": {
+        "experience": 200,
+        "gold": 250,
+        "reputation": 28,
+        "items": ["cle_ancienne", "gemme_royale"]
+      }
+    },
+    {
+      "id": "underground_market",
+      "title": "Marché Noir Souterrain",
+      "description": "Accédez au marché noir le plus secret du royaume, caché dans les profondeurs. Négociez avec des marchands louches, achetez des informations précieuses et établissez des contacts utiles.",
+      "duration": 35,
+      "difficulty": "facile",
+      "requirements": {
+        "minLevel": 2,
+        "requiredItem": "carte_reseau"
+      },
+      "rewards": {
+        "experience": 90,
+        "gold": 100,
+        "reputation": 12,
+        "items": ["jeton_marchand", "potion_defense"]
+      }
+    },
+    {
+      "id": "sewer_monster",
+      "title": "La Bête des Égouts",
+      "description": "Une créature monstrueuse terrorise les tunnels souterrains, menaçant les opérations clandestines. Traquez et éliminez cette abomination pour restaurer la sécurité du réseau.",
+      "duration": 65,
+      "difficulty": "difficile",
+      "requirements": {
+        "minLevel": 7,
+        "requiredItem": "carte_reseau"
+      },
+      "rewards": {
+        "experience": 280,
+        "gold": 160,
+        "reputation": 40,
+        "items": ["croc_monstre", "armure_cuir_renforce", "grande_potion_soin"]
+      }
+    }
+  ]
+}

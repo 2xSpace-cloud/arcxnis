@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "id": "bro_est_fou",
+      "name": "Bro est fou",
+      "type": "titre",
+      "rarity": "unique",
+      "description": "Pour le boss des Corboss",
+      "unique": true,
+      "tradeable": false,
+      "createdBy": "1509907317515096254",
+      "createdAt": "2026-06-23T15:25:25.058Z",
+      "stats": {}
+    }
+  ]
+}

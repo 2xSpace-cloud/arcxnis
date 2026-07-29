@@ -1,0 +1,50 @@
+{
+  "1237444706993049682": {
+    "id": "1237444706993049682",
+    "name": "kld1",
+    "class": "voleur",
+    "level": 1,
+    "experience": 0,
+    "health": 90,
+    "maxHealth": 90,
+    "mana": 50,
+    "maxMana": 50,
+    "gold": 100,
+    "reputation": 0,
+    "faction": null,
+    "inventory": {},
+    "stats": {
+      "attack": 16,
+      "defense": 10,
+      "magicAttack": 8,
+      "magicDefense": 7,
+      "speed": 18
+    },
+    "quests": {
+      "active": null,
+      "completed": [],
+      "completedToday": 0,
+      "lastQuestTime": null
+    },
+    "combat": {
+      "wins": 0,
+      "losses": 0,
+      "totalDamageDealt": 0,
+      "totalDamageTaken": 0
+    },
+    "equipment": {
+      "weapon": null,
+      "armor": {
+        "head": null,
+        "chest": null,
+        "legs": null,
+        "feet": null,
+        "hands": null,
+        "shield": null
+      }
+    },
+    "gemmes": 0,
+    "createdAt": "2026-04-18T14:55:16.527Z",
+    "lastActive": "2026-04-18T14:55:16.527Z"
+  }
+}

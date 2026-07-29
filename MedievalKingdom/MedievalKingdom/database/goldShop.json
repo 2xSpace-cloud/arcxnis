@@ -1,0 +1,375 @@
+{
+  "consumables": {
+    "potion_soin": {
+      "name": "Potion de Soin",
+      "emoji": "🧪",
+      "description": "Restaure 50 points de vie",
+      "price": 25,
+      "stock": "unlimited"
+    },
+    "grande_potion_soin": {
+      "name": "Grande Potion de Soin",
+      "emoji": "🧪",
+      "description": "Restaure 100 points de vie",
+      "price": 60,
+      "stock": "unlimited"
+    },
+    "potion_mana": {
+      "name": "Potion de Mana",
+      "emoji": "💙",
+      "description": "Restaure 30 points de mana",
+      "price": 30,
+      "stock": "unlimited"
+    },
+    "grande_potion_mana": {
+      "name": "Grande Potion de Mana",
+      "emoji": "💙",
+      "description": "Restaure 60 points de mana",
+      "price": 70,
+      "stock": "unlimited"
+    },
+    "elixir_force": {
+      "name": "Élixir de Force",
+      "emoji": "💪",
+      "description": "Augmente l'attaque de 15 pour le prochain combat",
+      "price": 100,
+      "stock": "unlimited"
+    },
+    "potion_defense": {
+      "name": "Potion de Défense",
+      "emoji": "🛡️",
+      "description": "Augmente la défense de 10 pour le prochain combat",
+      "price": 80,
+      "stock": "unlimited"
+    },
+    "bombe_feu": {
+      "name": "Bombe de Feu",
+      "emoji": "💣",
+      "description": "Inflige 40 dégâts de feu à l'ennemi",
+      "price": 120,
+      "stock": "unlimited"
+    },
+    "fiole_poison": {
+      "name": "Fiole de Poison",
+      "emoji": "☠️",
+      "description": "Inflige 30 dégâts de poison à l'ennemi",
+      "price": 90,
+      "stock": "unlimited"
+    }
+  },
+  "equipment": {
+    "epee_courte": {
+      "name": "Épée Courte",
+      "emoji": "🗡️",
+      "description": "Une épée basique mais efficace",
+      "type": "weapon",
+      "rarity": "common",
+      "price": 100,
+      "stats": {
+        "attack": 12
+      }
+    },
+    "epee_longue": {
+      "name": "Épée Longue",
+      "emoji": "⚔️",
+      "description": "Arme noble des chevaliers",
+      "type": "weapon",
+      "rarity": "common",
+      "price": 200,
+      "stats": {
+        "attack": 20
+      }
+    },
+    "dague_acier": {
+      "name": "Dague en Acier",
+      "emoji": "🗡️",
+      "description": "Rapide et mortelle",
+      "type": "weapon",
+      "rarity": "common",
+      "price": 150,
+      "stats": {
+        "attack": 15,
+        "speed": 5
+      }
+    },
+    "baton_chene": {
+      "name": "Bâton de Chêne",
+      "emoji": "🪄",
+      "description": "Amplifie légèrement la magie",
+      "type": "weapon",
+      "rarity": "common",
+      "price": 180,
+      "stats": {
+        "magicAttack": 18
+      }
+    },
+    "baton_mage": {
+      "name": "Bâton de Mage",
+      "emoji": "🔮",
+      "description": "Amplifie la puissance magique",
+      "type": "weapon",
+      "rarity": "uncommon",
+      "price": 400,
+      "stats": {
+        "magicAttack": 25,
+        "manaRegen": 2
+      }
+    },
+    "arc_long": {
+      "name": "Arc Long",
+      "emoji": "🏹",
+      "description": "Parfait pour les attaques à distance",
+      "type": "weapon",
+      "rarity": "uncommon",
+      "price": 350,
+      "stats": {
+        "attack": 22,
+        "speed": 8
+      }
+    },
+    "hache_guerre": {
+      "name": "Hache de Guerre",
+      "emoji": "🪓",
+      "description": "Lourde mais dévastatrice",
+      "type": "weapon",
+      "rarity": "uncommon",
+      "price": 450,
+      "stats": {
+        "attack": 30,
+        "speed": -3
+      }
+    },
+    "armure_cuir": {
+      "name": "Armure de Cuir",
+      "emoji": "🦺",
+      "description": "Protection légère et flexible",
+      "type": "armor",
+      "rarity": "common",
+      "price": 120,
+      "stats": {
+        "defense": 8,
+        "speed": 2
+      }
+    },
+    "armure_mailles": {
+      "name": "Armure de Mailles",
+      "emoji": "🛡️",
+      "description": "Protection solide en métal",
+      "type": "armor",
+      "rarity": "uncommon",
+      "price": 300,
+      "stats": {
+        "defense": 15
+      }
+    },
+    "armure_plaques": {
+      "name": "Armure de Plaques",
+      "emoji": "🛡️",
+      "description": "Protection maximale pour les guerriers",
+      "type": "armor",
+      "rarity": "rare",
+      "price": 800,
+      "stats": {
+        "defense": 25,
+        "speed": -5
+      }
+    },
+    "robe_mage": {
+      "name": "Robe de Mage",
+      "emoji": "👘",
+      "description": "Augmente les capacités magiques",
+      "type": "armor",
+      "rarity": "uncommon",
+      "price": 350,
+      "stats": {
+        "magicDefense": 12,
+        "magicAttack": 8
+      }
+    },
+    "cape_ombre": {
+      "name": "Cape d'Ombre",
+      "emoji": "🧥",
+      "description": "Parfaite pour la discrétion",
+      "type": "armor",
+      "rarity": "rare",
+      "price": 600,
+      "stats": {
+        "defense": 10,
+        "speed": 12
+      }
+    },
+    "bouclier_bois": {
+      "name": "Bouclier en Bois",
+      "emoji": "🛡️",
+      "description": "Protection basique",
+      "type": "shield",
+      "rarity": "common",
+      "price": 80,
+      "stats": {
+        "defense": 10
+      }
+    },
+    "bouclier_acier": {
+      "name": "Bouclier en Acier",
+      "emoji": "🛡️",
+      "description": "Protection robuste",
+      "type": "shield",
+      "rarity": "uncommon",
+      "price": 250,
+      "stats": {
+        "defense": 18
+      }
+    },
+    "baton_nature": {
+      "name": "Bâton de Nature",
+      "emoji": "🌿",
+      "description": "Bâton magique canalisateur du pouvoir de la nature",
+      "type": "weapon",
+      "rarity": "rare",
+      "price": 600,
+      "stats": {
+        "magicAttack": 20,
+        "manaRegen": 3,
+        "nature_affinity": 10
+      }
+    },
+    "grimoire_apprenti": {
+      "name": "Grimoire d'Apprenti",
+      "emoji": "📖",
+      "description": "Premier tome des enseignements magiques de l'académie arcanique",
+      "type": "weapon",
+      "rarity": "uncommon",
+      "price": 350,
+      "stats": {
+        "magicAttack": 15
+      }
+    },
+    "orbe_arcanique": {
+      "name": "Orbe Arcanique",
+      "emoji": "🔮",
+      "description": "Orbe de puissance magique concentrée, symbole du maître arcaniste",
+      "type": "weapon",
+      "rarity": "legendary",
+      "price": 1200,
+      "stats": {
+        "magicAttack": 45,
+        "manaRegen": 5,
+        "magicDefense": 20
+      }
+    },
+    "dague_shadowbane": {
+      "name": "Dague Shadowbane",
+      "emoji": "🗡️",
+      "description": "Dague légendaire du maître voleur Shadowbane, forgée dans les ombres",
+      "type": "weapon",
+      "rarity": "legendary",
+      "price": 1500,
+      "stats": {
+        "attack": 35,
+        "stealth": 20,
+        "poisonChance": 0.4
+      }
+    },
+    "armure_royale": {
+      "name": "Armure Royale",
+      "emoji": "👑",
+      "description": "Armure légendaire de la couronne royale, protégeant son porteur avec honneur",
+      "type": "armor",
+      "rarity": "legendary",
+      "price": 1100,
+      "stats": {
+        "defense": 40,
+        "health": 50
+      }
+    },
+    "bouclier_royal": {
+      "name": "Bouclier Royal",
+      "emoji": "🛡️",
+      "description": "Bouclier prestigieux aux couleurs du royaume",
+      "type": "shield",
+      "rarity": "rare",
+      "price": 700,
+      "stats": {
+        "defense": 25
+      }
+    },
+    "armure_cuir_renforce": {
+      "name": "Armure de Cuir Renforcée",
+      "emoji": "🦺",
+      "description": "Armure en cuir renforcée avec des plaques de métal",
+      "type": "armor",
+      "rarity": "rare",
+      "price": 850,
+      "stats": {
+        "defense": 30,
+        "health": 20
+      }
+    },
+    "cape_espion": {
+      "name": "Cape d'Espion",
+      "emoji": "🧥",
+      "description": "Cape magique qui rend le porteur moins visible dans les ombres",
+      "type": "armor",
+      "rarity": "rare",
+      "price": 750,
+      "stats": {
+        "stealth": 25,
+        "defense": 12
+      }
+    },
+    "gants_pickpocket": {
+      "name": "Gants de Pickpocket",
+      "emoji": "🧤",
+      "description": "Gants spécialisés qui augmentent les chances de vol sans être remarqué",
+      "type": "armor",
+      "rarity": "rare",
+      "price": 650,
+      "stats": {
+        "stealth": 15,
+        "dexterity": 10
+      }
+    }
+  },
+  "magicChests": {
+    "coffre_enchantement_mineur": {
+      "name": "Coffre d'Enchantement Mineur",
+      "emoji": "📦",
+      "description": "Contient un enchantement aléatoire (Common/Uncommon)",
+      "price": 200,
+      "lootTable": {
+        "common": 0.7,
+        "uncommon": 0.3
+      }
+    },
+    "coffre_enchantement": {
+      "name": "Coffre d'Enchantement",
+      "emoji": "🎁",
+      "description": "Contient un enchantement aléatoire (Uncommon/Rare)",
+      "price": 500,
+      "lootTable": {
+        "uncommon": 0.6,
+        "rare": 0.4
+      }
+    },
+    "coffre_enchantement_superieur": {
+      "name": "Coffre d'Enchantement Supérieur",
+      "emoji": "💎",
+      "description": "Contient un enchantement aléatoire (Rare/Epic)",
+      "price": 1200,
+      "lootTable": {
+        "rare": 0.7,
+        "epic": 0.3
+      }
+    },
+    "coffre_enchantement_legendaire": {
+      "name": "Coffre d'Enchantement Légendaire",
+      "emoji": "👑",
+      "description": "Contient un enchantement aléatoire (Epic/Legendary)",
+      "price": 3000,
+      "lootTable": {
+        "epic": 0.7,
+        "legendary": 0.3
+      }
+    }
+  }
+}

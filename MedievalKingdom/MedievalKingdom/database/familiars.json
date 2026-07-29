@@ -1,0 +1,232 @@
+{
+  "familiars": {
+    "chat_noir": {
+      "name": "Chat Noir",
+      "emoji": "🐈‍⬛",
+      "description": "Un chat mystérieux qui porte chance",
+      "rarity": "common",
+      "price": 150,
+      "bonuses": {
+        "stats": {
+          "speed": 3
+        },
+        "economic": {
+          "goldBonus": 0.05
+        },
+        "combat": null
+      }
+    },
+    "corbeau": {
+      "name": "Corbeau",
+      "emoji": "🐦‍⬛",
+      "description": "Un corbeau intelligent qui trouve des trésors",
+      "rarity": "common",
+      "price": 200,
+      "bonuses": {
+        "stats": null,
+        "economic": {
+          "experienceBonus": 0.08,
+          "lootBonus": 0.1
+        },
+        "combat": null
+      }
+    },
+    "loup": {
+      "name": "Loup",
+      "emoji": "🐺",
+      "description": "Un loup fidèle qui combat à vos côtés",
+      "rarity": "uncommon",
+      "price": 400,
+      "bonuses": {
+        "stats": {
+          "attack": 5,
+          "speed": 5
+        },
+        "economic": null,
+        "combat": {
+          "type": "attack",
+          "damage": 15,
+          "chance": 0.2
+        }
+      }
+    },
+    "hibou": {
+      "name": "Hibou",
+      "emoji": "🦉",
+      "description": "Un hibou sage qui augmente votre sagesse",
+      "rarity": "uncommon",
+      "price": 350,
+      "bonuses": {
+        "stats": {
+          "magicAttack": 6,
+          "magicDefense": 4
+        },
+        "economic": {
+          "experienceBonus": 0.12
+        },
+        "combat": null
+      }
+    },
+    "renard": {
+      "name": "Renard",
+      "emoji": "🦊",
+      "description": "Un renard rusé qui augmente vos gains",
+      "rarity": "rare",
+      "price": 600,
+      "bonuses": {
+        "stats": {
+          "speed": 8
+        },
+        "economic": {
+          "goldBonus": 0.15,
+          "lootBonus": 0.15
+        },
+        "combat": null
+      }
+    },
+    "faucon": {
+      "name": "Faucon",
+      "emoji": "🦅",
+      "description": "Un faucon noble qui attaque avec précision",
+      "rarity": "rare",
+      "price": 700,
+      "bonuses": {
+        "stats": {
+          "attack": 8,
+          "speed": 10
+        },
+        "economic": null,
+        "combat": {
+          "type": "attack",
+          "damage": 25,
+          "chance": 0.25
+        }
+      }
+    },
+    "serpent": {
+      "name": "Serpent Venimeux",
+      "emoji": "🐍",
+      "description": "Un serpent qui empoisonne vos ennemis",
+      "rarity": "rare",
+      "price": 650,
+      "bonuses": {
+        "stats": {
+          "attack": 6
+        },
+        "economic": null,
+        "combat": {
+          "type": "poison",
+          "damage": 10,
+          "duration": 3,
+          "chance": 0.3
+        }
+      }
+    },
+    "dragon_bebe": {
+      "name": "Bébé Dragon",
+      "emoji": "🐲",
+      "description": "Un jeune dragon qui crache du feu",
+      "rarity": "epic",
+      "price": 1500,
+      "bonuses": {
+        "stats": {
+          "attack": 12,
+          "magicAttack": 10,
+          "defense": 8
+        },
+        "economic": {
+          "experienceBonus": 0.15
+        },
+        "combat": {
+          "type": "fire_breath",
+          "damage": 40,
+          "chance": 0.2
+        }
+      }
+    },
+    "phoenix": {
+      "name": "Phénix",
+      "emoji": "🔥",
+      "description": "Un oiseau légendaire qui vous ressuscite une fois par combat",
+      "rarity": "legendary",
+      "price": 3000,
+      "bonuses": {
+        "stats": {
+          "magicAttack": 15,
+          "magicDefense": 12
+        },
+        "economic": {
+          "experienceBonus": 0.2,
+          "goldBonus": 0.2
+        },
+        "combat": {
+          "type": "resurrection",
+          "healAmount": 50,
+          "chance": 1.0
+        }
+      }
+    },
+    "licorne": {
+      "name": "Licorne",
+      "emoji": "🦄",
+      "description": "Une créature magique qui vous soigne",
+      "rarity": "legendary",
+      "price": 2500,
+      "bonuses": {
+        "stats": {
+          "defense": 10,
+          "magicDefense": 15,
+          "speed": 12
+        },
+        "economic": {
+          "lootBonus": 0.25
+        },
+        "combat": {
+          "type": "heal",
+          "healAmount": 30,
+          "chance": 0.3
+        }
+      }
+    },
+    "esprit_foret": {
+      "name": "Esprit de la Forêt",
+      "emoji": "🌿",
+      "description": "Un esprit ancien qui régénère votre mana",
+      "rarity": "epic",
+      "price": 1200,
+      "bonuses": {
+        "stats": {
+          "magicAttack": 10,
+          "magicDefense": 10
+        },
+        "economic": {
+          "experienceBonus": 0.18
+        },
+        "combat": {
+          "type": "mana_restore",
+          "manaAmount": 20,
+          "chance": 0.25
+        }
+      }
+    },
+    "golem": {
+      "name": "Petit Golem",
+      "emoji": "🗿",
+      "description": "Un golem de pierre qui vous protège",
+      "rarity": "epic",
+      "price": 1400,
+      "bonuses": {
+        "stats": {
+          "defense": 15,
+          "attack": 8
+        },
+        "economic": null,
+        "combat": {
+          "type": "shield",
+          "damageReduction": 0.3,
+          "chance": 0.25
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,439 @@
+{
+  "items": {
+    "potion_soin": {
+      "name": "Potion de Soin",
+      "description": "Restaure 50 points de vie",
+      "type": "consumable",
+      "rarity": "common",
+      "value": 10,
+      "effect": {
+        "type": "heal",
+        "amount": 50
+      }
+    },
+    "grande_potion_soin": {
+      "name": "Grande Potion de Soin",
+      "description": "Restaure 100 points de vie",
+      "type": "consumable",
+      "rarity": "uncommon",
+      "value": 25,
+      "effect": {
+        "type": "heal",
+        "amount": 100
+      }
+    },
+    "potion_mana": {
+      "name": "Potion de Mana",
+      "description": "Restaure 30 points de mana",
+      "type": "consumable",
+      "rarity": "common",
+      "value": 15,
+      "effect": {
+        "type": "mana_restore",
+        "amount": 30
+      }
+    },
+    "grande_potion_mana": {
+      "name": "Grande Potion de Mana",
+      "description": "Restaure 60 points de mana",
+      "type": "consumable",
+      "rarity": "uncommon",
+      "value": 30,
+      "effect": {
+        "type": "mana_restore",
+        "amount": 60
+      }
+    },
+    "bombe_feu": {
+      "name": "Bombe de Feu",
+      "description": "Inflige 40 dégâts de feu à l'ennemi",
+      "type": "consumable",
+      "rarity": "rare",
+      "value": 35,
+      "effect": {
+        "type": "damage",
+        "amount": 40
+      }
+    },
+    "fiole_poison": {
+      "name": "Fiole de Poison",
+      "description": "Inflige 30 dégâts de poison à l'ennemi",
+      "type": "consumable",
+      "rarity": "uncommon",
+      "value": 20,
+      "effect": {
+        "type": "damage",
+        "amount": 30
+      }
+    },
+    "elixir_force": {
+      "name": "Élixir de Force",
+      "description": "Augmente l'attaque de 15 pour le combat",
+      "type": "consumable",
+      "rarity": "rare",
+      "value": 40,
+      "effect": {
+        "type": "buff_attack",
+        "amount": 15
+      }
+    },
+    "potion_defense": {
+      "name": "Potion de Défense",
+      "description": "Augmente la défense de 10 pour le combat",
+      "type": "consumable",
+      "rarity": "uncommon",
+      "value": 30,
+      "effect": {
+        "type": "buff_defense",
+        "amount": 10
+      }
+    },
+    "livre_sorts": {
+      "name": "Livre de Sorts",
+      "description": "Augmente le mana maximum de 10 points",
+      "type": "consumable",
+      "rarity": "uncommon",
+      "value": 25,
+      "effect": {
+        "type": "stat_boost",
+        "stat": "maxMana",
+        "amount": 10
+      }
+    },
+    "dague_empoisonnee": {
+      "name": "Dague Empoisonnée",
+      "description": "Une dague qui inflige des dégâts de poison",
+      "type": "weapon",
+      "rarity": "rare",
+      "value": 50,
+      "stats": {
+        "attack": 15,
+        "poisonChance": 0.3
+      }
+    },
+    "luth_enchante": {
+      "name": "Luth Enchanté",
+      "description": "Instrument magique qui booste les performances",
+      "type": "instrument",
+      "rarity": "uncommon",
+      "value": 40,
+      "stats": {
+        "charisma": 5
+      }
+    },
+    "epee_longue": {
+      "name": "Épée Longue",
+      "description": "Arme noble des chevaliers",
+      "type": "weapon",
+      "rarity": "common",
+      "value": 35,
+      "stats": {
+        "attack": 20
+      }
+    },
+    "baton_mage": {
+      "name": "Bâton de Mage",
+      "description": "Amplifie la puissance magique",
+      "type": "weapon",
+      "rarity": "uncommon",
+      "value": 45,
+      "stats": {
+        "magicAttack": 25,
+        "manaRegen": 2
+      }
+    },
+    "armure_royale": {
+      "name": "Armure Royale",
+      "description": "Armure légendaire de la couronne royale, protégeant son porteur avec honneur",
+      "type": "armor",
+      "rarity": "legendary",
+      "value": 150,
+      "stats": {
+        "defense": 40,
+        "health": 50
+      }
+    },
+    "bouclier_royal": {
+      "name": "Bouclier Royal",
+      "description": "Bouclier prestigieux aux couleurs du royaume",
+      "type": "armor",
+      "rarity": "rare",
+      "value": 80,
+      "stats": {
+        "defense": 25
+      }
+    },
+    "cape_ombre": {
+      "name": "Cape d'Ombre",
+      "description": "Cape magique permettant de se fondre dans l'obscurité",
+      "type": "armor",
+      "rarity": "rare",
+      "value": 90,
+      "stats": {
+        "defense": 15,
+        "stealth": 10
+      }
+    },
+    "crochet_maitre": {
+      "name": "Crochet de Maître",
+      "description": "Outil de crochetage expert de la guilde des ombres",
+      "type": "tool",
+      "rarity": "rare",
+      "value": 75,
+      "stats": {
+        "lockpicking": 20
+      }
+    },
+    "carte_reseau": {
+      "name": "Carte du Réseau",
+      "description": "Carte détaillée du réseau secret de la guilde des ombres",
+      "type": "item",
+      "rarity": "rare",
+      "value": 60,
+      "effect": {
+        "type": "knowledge",
+        "benefit": "Accès au réseau de la guilde"
+      }
+    },
+    "baton_nature": {
+      "name": "Bâton de Nature",
+      "description": "Bâton magique canalisateur du pouvoir de la nature",
+      "type": "weapon",
+      "rarity": "rare",
+      "value": 85,
+      "stats": {
+        "magicAttack": 20,
+        "manaRegen": 3,
+        "nature_affinity": 10
+      }
+    },
+    "amulette_nature": {
+      "name": "Amulette de Nature",
+      "description": "Amulette qui renforce la connexion avec la nature",
+      "type": "accessory",
+      "rarity": "rare",
+      "value": 70,
+      "stats": {
+        "maxHealth": 30,
+        "manaRegen": 2
+      }
+    },
+    "grimoire_apprenti": {
+      "name": "Grimoire d'Apprenti",
+      "description": "Premier tome des enseignements magiques de l'académie arcanique",
+      "type": "weapon",
+      "rarity": "uncommon",
+      "value": 50,
+      "stats": {
+        "magicAttack": 15
+      }
+    },
+    "orbe_arcanique": {
+      "name": "Orbe Arcanique",
+      "description": "Orbe de puissance magique concentrée, symbole du maître arcaniste",
+      "type": "weapon",
+      "rarity": "legendary",
+      "value": 160,
+      "stats": {
+        "magicAttack": 45,
+        "manaRegen": 5,
+        "magicDefense": 20
+      }
+    },
+    "torche_eternelle": {
+      "name": "Torche Éternelle",
+      "description": "Torche magique qui ne s'éteint jamais et illumine les ténèbres",
+      "type": "item",
+      "rarity": "rare",
+      "value": 55,
+      "effect": {
+        "type": "light",
+        "benefit": "Illumination permanente"
+      }
+    },
+    "sac_contrebande": {
+      "name": "Sac de Contrebande",
+      "description": "Sac spécial conçu pour dissimuler les marchandises illégales",
+      "type": "item",
+      "rarity": "rare",
+      "value": 65,
+      "stats": {
+        "carrying_capacity": 20
+      }
+    },
+    "gants_pickpocket": {
+      "name": "Gants de Pickpocket",
+      "description": "Gants spécialisés qui augmentent les chances de vol sans être remarqué",
+      "type": "armor",
+      "rarity": "rare",
+      "value": 70,
+      "stats": {
+        "stealth": 15,
+        "dexterity": 10
+      }
+    },
+    "dague_shadowbane": {
+      "name": "Dague Shadowbane",
+      "description": "Dague légendaire du maître voleur Shadowbane, forgée dans les ombres",
+      "type": "weapon",
+      "rarity": "legendary",
+      "value": 180,
+      "stats": {
+        "attack": 35,
+        "stealth": 20,
+        "poisonChance": 0.4
+      }
+    },
+    "couronne_voleur": {
+      "name": "Couronne du Voleur",
+      "description": "Couronne ornée du trésor du légendaire Shadowbane",
+      "type": "accessory",
+      "rarity": "legendary",
+      "value": 200,
+      "stats": {
+        "charisma": 15,
+        "reputation": 50
+      }
+    },
+    "medaille_champion": {
+      "name": "Médaille de Champion",
+      "description": "Médaille d'or remise aux champions de l'arène souterraine",
+      "type": "accessory",
+      "rarity": "rare",
+      "value": 85,
+      "stats": {
+        "attack": 10,
+        "defense": 10,
+        "reputation": 20
+      }
+    },
+    "parchemin_secrets": {
+      "name": "Parchemin des Secrets",
+      "description": "Parchemin contenant des secrets compromettants de la noblesse",
+      "type": "item",
+      "rarity": "rare",
+      "value": 95,
+      "effect": {
+        "type": "intelligence",
+        "benefit": "Accès à des informations secrètes"
+      }
+    },
+    "cape_espion": {
+      "name": "Cape d'Espion",
+      "description": "Cape magique qui rend le porteur moins visible dans les ombres",
+      "type": "armor",
+      "rarity": "rare",
+      "value": 105,
+      "stats": {
+        "stealth": 25,
+        "defense": 12
+      }
+    },
+    "cle_ancienne": {
+      "name": "Clé Ancienne",
+      "description": "Clé mystérieuse qui ouvre le coffre-fort oublié de l'ancien royaume",
+      "type": "item",
+      "rarity": "legendary",
+      "value": 150,
+      "effect": {
+        "type": "unlock",
+        "benefit": "Accès au coffre-fort ancien"
+      }
+    },
+    "gemme_royale": {
+      "name": "Gemme Royale",
+      "description": "Gemme étincelante de la richesse du ancien royaume",
+      "type": "item",
+      "rarity": "legendary",
+      "value": 220,
+      "effect": {
+        "type": "treasure",
+        "benefit": "Richesse inestimable"
+      }
+    },
+    "jeton_marchand": {
+      "name": "Jeton de Marchand",
+      "description": "Jeton d'accès au marché noir souterrain",
+      "type": "item",
+      "rarity": "uncommon",
+      "value": 40,
+      "effect": {
+        "type": "access",
+        "benefit": "Accès au marché noir"
+      }
+    },
+    "croc_monstre": {
+      "name": "Croc de Monstre",
+      "description": "Croc géant de la bête des égouts",
+      "type": "item",
+      "rarity": "rare",
+      "value": 110,
+      "stats": {
+        "attack": 15
+      }
+    },
+    "armure_cuir_renforce": {
+      "name": "Armure de Cuir Renforcée",
+      "description": "Armure en cuir renforcée avec des plaques de métal",
+      "type": "armor",
+      "rarity": "rare",
+      "value": 120,
+      "stats": {
+        "defense": 30,
+        "health": 20
+      }
+    },
+    "epee_fer": {
+      "name": "Épée en Fer",
+      "description": "Épée basique en fer travaillé",
+      "type": "weapon",
+      "rarity": "common",
+      "value": 50,
+      "stats": {
+        "attack": 5
+      }
+    },
+    "armure_cuir": {
+      "name": "Armure en Cuir",
+      "description": "Armure basique en cuir résistant",
+      "type": "armor",
+      "rarity": "common",
+      "value": 40,
+      "stats": {
+        "defense": 3
+      }
+    },
+    "titre_heros": {
+      "name": "Titre : Héros",
+      "description": "Affiche le titre \"Héros\" sur votre profil",
+      "type": "title",
+      "rarity": "uncommon",
+      "value": 50,
+      "effect": {
+        "type": "cosmetic",
+        "benefit": "Titre prestigieux"
+      }
+    },
+    "armure_maille": {
+      "name": "Cotte de Mailles",
+      "description": "Cotte de mailles en métal entrecroisé",
+      "type": "armor",
+      "rarity": "uncommon",
+      "value": 80,
+      "stats": {
+        "defense": 7
+      }
+    },
+    "titre_champion": {
+      "name": "Titre : Champion",
+      "description": "Affiche le titre \"Champion\" sur votre profil",
+      "type": "title",
+      "rarity": "rare",
+      "value": 100,
+      "effect": {
+        "type": "cosmetic",
+        "benefit": "Titre honorifique"
+      }
+    }
+  }
+}

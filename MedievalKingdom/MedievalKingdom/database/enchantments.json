@@ -1,0 +1,224 @@
+{
+  "enchantments": {
+    "aiguisage": {
+      "name": "Enchantement d'Aiguisage",
+      "emoji": "🔪",
+      "description": "Aiguise votre arme pour augmenter légèrement les dégâts",
+      "rarity": "common",
+      "effects": {
+        "bonusDamage": 3
+      },
+      "applicableTypes": ["weapon"]
+    },
+    "solidite": {
+      "name": "Enchantement de Solidité",
+      "emoji": "🛡️",
+      "description": "Renforce votre armure pour augmenter légèrement la défense",
+      "rarity": "common",
+      "effects": {
+        "bonusDefense": 5
+      },
+      "applicableTypes": ["armor"]
+    },
+    "endurance": {
+      "name": "Enchantement d'Endurance",
+      "emoji": "❤️",
+      "description": "Augmente légèrement vos points de vie maximum",
+      "rarity": "common",
+      "effects": {
+        "bonusMaxHealth": 15
+      },
+      "applicableTypes": ["armor"]
+    },
+    "precision": {
+      "name": "Enchantement de Précision",
+      "emoji": "🎯",
+      "description": "Améliore votre précision au combat",
+      "rarity": "common",
+      "effects": {
+        "bonusAccuracy": 5,
+        "critChance": 0.05
+      },
+      "applicableTypes": ["weapon"]
+    },
+    "legerete": {
+      "name": "Enchantement de Légèreté",
+      "emoji": "🪶",
+      "description": "Rend votre équipement plus léger, augmentant légèrement la vitesse",
+      "rarity": "common",
+      "effects": {
+        "bonusSpeed": 3
+      },
+      "applicableTypes": ["armor", "weapon"]
+    },
+    "feu": {
+      "name": "Enchantement de Feu",
+      "emoji": "🔥",
+      "description": "Ajoute des dégâts de feu à vos attaques",
+      "rarity": "rare",
+      "effects": {
+        "bonusDamage": 10,
+        "damageType": "fire",
+        "burnChance": 0.2
+      },
+      "applicableTypes": ["weapon"]
+    },
+    "glace": {
+      "name": "Enchantement de Glace",
+      "emoji": "❄️",
+      "description": "Ralentit l'ennemi et ajoute des dégâts de glace",
+      "rarity": "rare",
+      "effects": {
+        "bonusDamage": 8,
+        "damageType": "ice",
+        "slowChance": 0.25
+      },
+      "applicableTypes": ["weapon"]
+    },
+    "foudre": {
+      "name": "Enchantement de Foudre",
+      "emoji": "⚡",
+      "description": "Inflige des dégâts électriques avec chance de paralyser",
+      "rarity": "epic",
+      "effects": {
+        "bonusDamage": 12,
+        "damageType": "lightning",
+        "stunChance": 0.15
+      },
+      "applicableTypes": ["weapon"]
+    },
+    "poison": {
+      "name": "Enchantement de Poison",
+      "emoji": "☠️",
+      "description": "Empoisonne l'ennemi, infligeant des dégâts sur la durée",
+      "rarity": "uncommon",
+      "effects": {
+        "bonusDamage": 6,
+        "damageType": "poison",
+        "poisonDuration": 3
+      },
+      "applicableTypes": ["weapon"]
+    },
+    "vampirisme": {
+      "name": "Enchantement de Vampirisme",
+      "emoji": "🩸",
+      "description": "Vole la vie de l'ennemi pour vous soigner",
+      "rarity": "epic",
+      "effects": {
+        "lifeSteal": 0.15,
+        "bonusDamage": 5
+      },
+      "applicableTypes": ["weapon"]
+    },
+    "critique": {
+      "name": "Enchantement Critique",
+      "emoji": "💥",
+      "description": "Augmente les chances et dégâts de coup critique",
+      "rarity": "rare",
+      "effects": {
+        "critChance": 0.1,
+        "critDamage": 0.25
+      },
+      "applicableTypes": ["weapon"]
+    },
+    "protection": {
+      "name": "Enchantement de Protection",
+      "emoji": "🛡️",
+      "description": "Augmente votre défense physique",
+      "rarity": "uncommon",
+      "effects": {
+        "bonusDefense": 15
+      },
+      "applicableTypes": ["armor"]
+    },
+    "resistance_magique": {
+      "name": "Enchantement de Résistance Magique",
+      "emoji": "✨",
+      "description": "Augmente votre défense magique",
+      "rarity": "rare",
+      "effects": {
+        "bonusMagicDefense": 12
+      },
+      "applicableTypes": ["armor"]
+    },
+    "regeneration": {
+      "name": "Enchantement de Régénération",
+      "emoji": "💚",
+      "description": "Régénère lentement vos points de vie",
+      "rarity": "epic",
+      "effects": {
+        "healthRegen": 5,
+        "regenInterval": 2
+      },
+      "applicableTypes": ["armor"]
+    },
+    "vitesse": {
+      "name": "Enchantement de Vitesse",
+      "emoji": "💨",
+      "description": "Augmente votre vitesse d'attaque et d'esquive",
+      "rarity": "rare",
+      "effects": {
+        "bonusSpeed": 8,
+        "dodgeChance": 0.1
+      },
+      "applicableTypes": ["armor", "weapon"]
+    },
+    "sagesse": {
+      "name": "Enchantement de Sagesse",
+      "emoji": "🔮",
+      "description": "Augmente votre mana maximum et régénération",
+      "rarity": "uncommon",
+      "effects": {
+        "bonusMaxMana": 20,
+        "manaRegen": 3
+      },
+      "applicableTypes": ["armor", "weapon"]
+    },
+    "force": {
+      "name": "Enchantement de Force",
+      "emoji": "💪",
+      "description": "Augmente votre puissance d'attaque",
+      "rarity": "uncommon",
+      "effects": {
+        "bonusAttack": 10
+      },
+      "applicableTypes": ["weapon"]
+    },
+    "lumiere": {
+      "name": "Enchantement de Lumière",
+      "emoji": "☀️",
+      "description": "Inflige des dégâts sacrés aux créatures des ténèbres",
+      "rarity": "epic",
+      "effects": {
+        "bonusDamage": 15,
+        "damageType": "holy",
+        "undeadBonus": 1.5
+      },
+      "applicableTypes": ["weapon"]
+    },
+    "tenebres": {
+      "name": "Enchantement des Ténèbres",
+      "emoji": "🌑",
+      "description": "Draine l'énergie vitale et affaiblit l'ennemi",
+      "rarity": "legendary",
+      "effects": {
+        "bonusDamage": 18,
+        "damageType": "dark",
+        "weakenChance": 0.2,
+        "lifeSteal": 0.1
+      },
+      "applicableTypes": ["weapon"]
+    },
+    "chance": {
+      "name": "Enchantement de Chance",
+      "emoji": "🍀",
+      "description": "Augmente vos chances d'obtenir de meilleurs loots",
+      "rarity": "rare",
+      "effects": {
+        "lootBonus": 0.25,
+        "goldBonus": 0.15
+      },
+      "applicableTypes": ["armor", "weapon"]
+    }
+  }
+}
