@@ -1,0 +1,152 @@
+✅ Loaded command: admin
+✅ Loaded command: marchenoir
+✅ Loaded command: achetergemmes
+✅ Loaded command: personnage
+✅ Loaded command: combat
+✅ Loaded command: createitem
+✅ Loaded command: drop
+✅ Loaded command: equiper
+✅ Loaded command: faction
+✅ Loaded command: familier
+✅ Loaded command: forge
+✅ Loaded command: giveaway
+✅ Loaded command: boutique-or
+✅ Loaded command: queteguilde
+✅ Loaded command: inventaire
+✅ Loaded command: items
+✅ Loaded command: classement
+✅ 0 missions collectives chargées
+✅ Loaded command: mjquete
+✅ Loaded command: quete
+✅ Loaded command: vendre
+✅ Loaded command: boutique
+✅ Loaded command: quetespeciale
+✅ Loaded command: gemmesvocales
+✅ Loaded event: undefined
+✅ Loaded event: guildMemberRemove
+✅ Loaded event: interactionCreate
+✅ Loaded event: messageCreate
+✅ Loaded event: ready
+✅ Loaded event: voiceStateUpdate
+Serveur en ligne sur le port 4242
+🏰 Connexion au royaume réussie !
+👑 Connecté en tant que Arcxnis#6505
+🏛️ Présent sur 1 serveurs
+🎉 Giveaways restaurés au démarrage
+🔄 Restauration du suivi vocal...
+✅ Restauration du suivi vocal terminée
+🎤 Suivi vocal restauré au démarrage
+📱 Statut défini: 🏰 au royaume médiéval
+🔄 Début de l'enregistrement des commandes slash...
+🔧 Enregistrement des commandes pour le serveur 1487866866063118578...
+✅ 23 commandes enregistrées pour le serveur 1487866866063118578.
+🔧 Vérification des rôles de faction...
+✅ Rôles de faction prêts.
+🔧 Vérification des rôles de classe...
+✅ Rôles de classe prêts.
+⏰ Tâches périodiques démarrées
+🎉 Bot Discord du Royaume Médiéval opérationnel !
+📋 Commandes disponibles:
+   /personnage - Gestion des personnages
+   /faction - Gestion des factions
+   /inventaire - Gestion de l'inventaire
+   /quete - Système de quêtes
+   /combat - Système de combat
+   /classement - Classements des joueurs
+🔎 Vérification des joueurs présents sur les serveurs (reconciliation)...
+✅ Reconciliation terminée
+📱 Statut défini: 🏰 au royaume médiéval
+📱 Statut défini: ⚔️ les combats épiques
+📱 Statut défini: 🏰 au royaume médiéval
+📱 Statut défini: 👑 4 aventuriers
+📱 Statut défini: 🏛️ les intrigues de factions
+Erreur lors de l'export: Error: EACCES: permission denied, open '/home/runner/workspace/MedievalKingdom/MedievalKingdom/database/backup_players_2026-07-16T14-37-32-920Z.json'
+[90m    at Object.writeFileSync (node:fs:2380:20)[39m
+    at exportPlayerData [90m(/home/runner/workspace/MedievalKingdom/MedievalKingdom/[39mutils/database.js:236:8[90m)[39m
+    at backupDatabase [90m(/home/runner/workspace/MedievalKingdom/MedievalKingdom/[39mevents/ready.js:239:24[90m)[39m
+    at Timeout._onTimeout [90m(/home/runner/workspace/MedievalKingdom/MedievalKingdom/[39mevents/ready.js:199:7[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:581:17)[39m
+[90m    at process.processTimers (node:internal/timers:519:7)[39m {
+  errno: [33m-13[39m,
+  code: [32m'EACCES'[39m,
+  syscall: [32m'open'[39m,
+  path: [32m'/home/runner/workspace/MedievalKingdom/MedievalKingdom/database/backup_players_2026-07-16T14-37-32-920Z.json'[39m
+}
+📱 Statut défini: 🏛️ les intrigues de factions
+📱 Statut défini: 📜 les quêtes du royaume
+📱 Statut défini: 🏰 au royaume médiéval
+📱 Statut défini: 📜 les quêtes du royaume
+📱 Statut défini: 👑 4 aventuriers
+📱 Statut défini: ⚔️ les combats épiques
+Erreur lors de l'export: Error: EACCES: permission denied, open '/home/runner/workspace/MedievalKingdom/MedievalKingdom/database/backup_players_2026-07-16T15-37-32-937Z.json'
+[90m    at Object.writeFileSync (node:fs:2380:20)[39m
+    at exportPlayerData [90m(/home/runner/workspace/MedievalKingdom/MedievalKingdom/[39mutils/database.js:236:8[90m)[39m
+    at backupDatabase [90m(/home/runner/workspace/MedievalKingdom/MedievalKingdom/[39mevents/ready.js:239:24[90m)[39m
+    at Timeout._onTimeout [90m(/home/runner/workspace/MedievalKingdom/MedievalKingdom/[39mevents/ready.js:199:7[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:581:17)[39m
+[90m    at process.processTimers (node:internal/timers:519:7)[39m {
+  errno: [33m-13[39m,
+  code: [32m'EACCES'[39m,
+  syscall: [32m'open'[39m,
+  path: [32m'/home/runner/workspace/MedievalKingdom/MedievalKingdom/database/backup_players_2026-07-16T15-37-32-937Z.json'[39m
+}
+📱 Statut défini: 📜 les quêtes du royaume
+📱 Statut défini: 👑 4 aventuriers
+📱 Statut défini: 📜 les quêtes du royaume
+📱 Statut défini: 👑 4 aventuriers
+📱 Statut défini: 🏛️ les intrigues de factions
+📱 Statut défini: 🏛️ les intrigues de factions
+Erreur lors de l'export: Error: EACCES: permission denied, open '/home/runner/workspace/MedievalKingdom/MedievalKingdom/database/backup_players_2026-07-16T16-37-32-951Z.json'
+[90m    at Object.writeFileSync (node:fs:2380:20)[39m
+    at exportPlayerData [90m(/home/runner/workspace/MedievalKingdom/MedievalKingdom/[39mutils/database.js:236:8[90m)[39m
+    at backupDatabase [90m(/home/runner/workspace/MedievalKingdom/MedievalKingdom/[39mevents/ready.js:239:24[90m)[39m
+    at Timeout._onTimeout [90m(/home/runner/workspace/MedievalKingdom/MedievalKingdom/[39mevents/ready.js:199:7[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:581:17)[39m
+[90m    at process.processTimers (node:internal/timers:519:7)[39m {
+  errno: [33m-13[39m,
+  code: [32m'EACCES'[39m,
+  syscall: [32m'open'[39m,
+  path: [32m'/home/runner/workspace/MedievalKingdom/MedievalKingdom/database/backup_players_2026-07-16T16-37-32-951Z.json'[39m
+}
+📱 Statut défini: ⚔️ les combats épiques
+📱 Statut défini: 📜 les quêtes du royaume
+📱 Statut défini: 🏰 au royaume médiéval
+📱 Statut défini: ⚔️ les combats épiques
+📱 Statut défini: 🏰 au royaume médiéval
+📱 Statut défini: ⚔️ les combats épiques
+Erreur lors de l'export: Error: EACCES: permission denied, open '/home/runner/workspace/MedievalKingdom/MedievalKingdom/database/backup_players_2026-07-16T17-37-32-902Z.json'
+[90m    at Object.writeFileSync (node:fs:2380:20)[39m
+    at exportPlayerData [90m(/home/runner/workspace/MedievalKingdom/MedievalKingdom/[39mutils/database.js:236:8[90m)[39m
+    at backupDatabase [90m(/home/runner/workspace/MedievalKingdom/MedievalKingdom/[39mevents/ready.js:239:24[90m)[39m
+    at Timeout._onTimeout [90m(/home/runner/workspace/MedievalKingdom/MedievalKingdom/[39mevents/ready.js:199:7[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:581:17)[39m
+[90m    at process.processTimers (node:internal/timers:519:7)[39m {
+  errno: [33m-13[39m,
+  code: [32m'EACCES'[39m,
+  syscall: [32m'open'[39m,
+  path: [32m'/home/runner/workspace/MedievalKingdom/MedievalKingdom/database/backup_players_2026-07-16T17-37-32-902Z.json'[39m
+}
+📱 Statut défini: 🏛️ les intrigues de factions
+📱 Statut défini: 🏰 au royaume médiéval
+📱 Statut défini: 📜 les quêtes du royaume
+📱 Statut défini: 🏰 au royaume médiéval
+📱 Statut défini: 🏛️ les intrigues de factions
+📱 Statut défini: 👑 4 aventuriers
+Erreur lors de l'export: Error: EACCES: permission denied, open '/home/runner/workspace/MedievalKingdom/MedievalKingdom/database/backup_players_2026-07-16T18-37-33-041Z.json'
+[90m    at Object.writeFileSync (node:fs:2380:20)[39m
+    at exportPlayerData [90m(/home/runner/workspace/MedievalKingdom/MedievalKingdom/[39mutils/database.js:236:8[90m)[39m
+    at backupDatabase [90m(/home/runner/workspace/MedievalKingdom/MedievalKingdom/[39mevents/ready.js:239:24[90m)[39m
+    at Timeout._onTimeout [90m(/home/runner/workspace/MedievalKingdom/MedievalKingdom/[39mevents/ready.js:199:7[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:581:17)[39m
+[90m    at process.processTimers (node:internal/timers:519:7)[39m {
+  errno: [33m-13[39m,
+  code: [32m'EACCES'[39m,
+  syscall: [32m'open'[39m,
+  path: [32m'/home/runner/workspace/MedievalKingdom/MedievalKingdom/database/backup_players_2026-07-16T18-37-33-041Z.json'[39m
+}
+📱 Statut défini: 🏰 au royaume médiéval
+📱 Statut défini: 🏛️ les intrigues de factions
+📱 Statut défini: 🏛️ les intrigues de factions
+📱 Statut défini: 📜 les quêtes du royaume
+📱 Statut défini: 🏛️ les intrigues de factions
+📱 Statut défini: 🏛️ les intrigues de factions

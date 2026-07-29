@@ -1,0 +1,58 @@
+✅ Loaded command: admin
+✅ Loaded command: marchenoir
+✅ Loaded command: achetergemmes
+✅ Loaded command: personnage
+✅ Loaded command: combat
+✅ Loaded command: createitem
+✅ Loaded command: drop
+✅ Loaded command: equiper
+✅ Loaded command: faction
+✅ Loaded command: familier
+✅ Loaded command: forge
+✅ Loaded command: giveaway
+✅ Loaded command: boutique-or
+✅ Loaded command: queteguilde
+✅ Loaded command: inventaire
+✅ Loaded command: items
+✅ Loaded command: classement
+✅ 0 missions collectives chargées
+✅ Loaded command: mjquete
+✅ Loaded command: quete
+✅ Loaded command: vendre
+✅ Loaded command: boutique
+✅ Loaded command: quetespeciale
+✅ Loaded command: gemmesvocales
+✅ Loaded event: undefined
+✅ Loaded event: guildMemberRemove
+✅ Loaded event: interactionCreate
+✅ Loaded event: messageCreate
+✅ Loaded event: ready
+✅ Loaded event: voiceStateUpdate
+Serveur en ligne sur le port 4242
+🏰 Connexion au royaume réussie !
+👑 Connecté en tant que Arcxnis#6505
+🏛️ Présent sur 1 serveurs
+🎉 Giveaways restaurés au démarrage
+🔄 Restauration du suivi vocal...
+✅ Restauration du suivi vocal terminée
+🎤 Suivi vocal restauré au démarrage
+📱 Statut défini: 🏰 au royaume médiéval
+🔄 Début de l'enregistrement des commandes slash...
+🔧 Enregistrement des commandes pour le serveur 1487866866063118578...
+✅ 23 commandes enregistrées pour le serveur 1487866866063118578.
+🔧 Vérification des rôles de faction...
+✅ Rôles de faction prêts.
+🔧 Vérification des rôles de classe...
+✅ Rôles de classe prêts.
+⏰ Tâches périodiques démarrées
+🎉 Bot Discord du Royaume Médiéval opérationnel !
+📋 Commandes disponibles:
+   /personnage - Gestion des personnages
+   /faction - Gestion des factions
+   /inventaire - Gestion de l'inventaire
+   /quete - Système de quêtes
+   /combat - Système de combat
+   /classement - Classements des joueurs
+🔎 Vérification des joueurs présents sur les serveurs (reconciliation)...
+✅ Reconciliation terminée
+📱 Statut défini: 🏛️ les intrigues de factions

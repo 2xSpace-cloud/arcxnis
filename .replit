@@ -1,0 +1,58 @@
+modules = ["nodejs-20"]
+[nix]
+channel = "stable-25_05"
+
+[agent]
+expertMode = true
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Bot Discord"
+
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node dashboard/server/index.js"
+waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow]]
+name = "Bot Discord"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd MedievalKingdom/MedievalKingdom && node index.js"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[ports]]
+localPort = 4242
+externalPort = 3001
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[userenv]
+
+[userenv.shared]
+CLIENT_ID = "1517617267502747810"
