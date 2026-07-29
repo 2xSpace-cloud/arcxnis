@@ -1,0 +1,979 @@
+{
+  "templates": [
+    {
+      "id": "guard_duty",
+      "title": "Garde Royale",
+      "description": "Effectuez une ronde de garde autour du château royal. Des bandits rôdent — neutralisez les menaces !",
+      "requirements": {
+        "minLevel": 1
+      },
+      "rewards": {
+        "experience": 30,
+        "gold": 15,
+        "items": [
+          "potion_soin"
+        ]
+      },
+      "duration": 15,
+      "objectives": [
+        {
+          "type": "kill_player_bandit",
+          "required": 2,
+          "description": "Neutraliser 2 bandits"
+        }
+      ]
+    },
+    {
+      "id": "ancient_scroll",
+      "title": "Parchemin Ancien",
+      "description": "Déchiffrez un ancien parchemin dans les ruines. Des gardiens protègent le site — affrontez-les !",
+      "requirements": {
+        "minLevel": 3
+      },
+      "rewards": {
+        "experience": 45,
+        "gold": 25,
+        "items": [
+          "livre_sorts"
+        ]
+      },
+      "duration": 25,
+      "objectives": [
+        {
+          "type": "win_pve",
+          "required": 2,
+          "description": "Survivre à 2 combats"
+        }
+      ]
+    },
+    {
+      "id": "stealth_mission",
+      "title": "Mission Furtive",
+      "description": "Infiltrez le repaire des bandits. Vous ne pouvez éviter tous les gardes — bataillez-vous un chemin !",
+      "requirements": {
+        "minLevel": 2
+      },
+      "rewards": {
+        "experience": 40,
+        "gold": 30,
+        "items": [
+          "dague_empoisonnee"
+        ]
+      },
+      "duration": 20,
+      "objectives": [
+        {
+          "type": "kill_player_bandit",
+          "required": 3,
+          "description": "Éliminer 3 bandits discrètement"
+        }
+      ]
+    },
+    {
+      "id": "tavern_performance",
+      "title": "Spectacle à la Taverne",
+      "description": "Divertissez les clients en les impressionnant... un ivrogne veut se battre, montrez votre valeur !",
+      "requirements": {
+        "minLevel": 1
+      },
+      "rewards": {
+        "experience": 20,
+        "gold": 35,
+        "items": [
+          "luth_enchante"
+        ]
+      },
+      "duration": 10,
+      "objectives": [
+        {
+          "type": "win_pvp",
+          "required": 1,
+          "description": "Remporter 1 duel contre un autre joueur"
+        }
+      ]
+    },
+    {
+      "id": "monster_hunt",
+      "title": "Chasse au Monstre",
+      "description": "Un monstre terrorise le village. Débusquez-le et éliminez ses sbires avant de l'affronter !",
+      "requirements": {
+        "minLevel": 2
+      },
+      "rewards": {
+        "experience": 50,
+        "gold": 40,
+        "items": [
+          "epee_longue"
+        ]
+      },
+      "duration": 30,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "loup",
+          "required": 2,
+          "description": "Tuer 2 loups"
+        },
+        {
+          "type": "kill_monster",
+          "monsterKey": "gobelin",
+          "required": 1,
+          "description": "Tuer 1 gobelin"
+        }
+      ]
+    },
+    {
+      "id": "herb_collection",
+      "title": "Collecte d'Herbes",
+      "description": "Parcourez la forêt pour trouver des plantes médicinales. Des créatures gardent les zones les plus riches !",
+      "requirements": {
+        "minLevel": 1
+      },
+      "rewards": {
+        "experience": 25,
+        "gold": 20,
+        "items": [
+          "potion_soin"
+        ]
+      },
+      "duration": 12,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "gobelin",
+          "required": 2,
+          "description": "Repousser 2 gobelins pillards"
+        }
+      ]
+    },
+    {
+      "id": "merchant_escort",
+      "title": "Escorte de Marchand",
+      "description": "Protégez le marchand sur la route infestée de bandits. Chaque attaque doit être repoussée !",
+      "requirements": {
+        "minLevel": 2
+      },
+      "rewards": {
+        "experience": 35,
+        "gold": 50,
+        "items": [
+          "potion_soin"
+        ]
+      },
+      "duration": 25,
+      "objectives": [
+        {
+          "type": "kill_player_bandit",
+          "required": 3,
+          "description": "Neutraliser 3 bandits de grand chemin"
+        }
+      ]
+    },
+    {
+      "id": "magic_research",
+      "title": "Recherche Magique",
+      "description": "Étudiez un artefact dans une grotte maudite. Les entités qui la gardent ne vous laisseront pas passer !",
+      "requirements": {
+        "minLevel": 4
+      },
+      "rewards": {
+        "experience": 60,
+        "gold": 35,
+        "items": [
+          "livre_sorts"
+        ]
+      },
+      "duration": 35,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "squelette",
+          "required": 2,
+          "description": "Vaincre 2 squelettes pour prélèvements"
+        }
+      ]
+    },
+    {
+      "id": "tournament_participation",
+      "title": "Participation au Tournoi",
+      "description": "Participez au tournoi d'arts martiaux. Battez-vous contre des guerriers et montrez votre valeur !",
+      "requirements": {
+        "minLevel": 3
+      },
+      "rewards": {
+        "experience": 55,
+        "gold": 60,
+        "items": [
+          "epee_longue"
+        ]
+      },
+      "duration": 20,
+      "objectives": [
+        {
+          "type": "win_pvp",
+          "required": 3,
+          "description": "Remporter 3 duels dans le tournoi"
+        }
+      ]
+    },
+    {
+      "id": "lost_pet_rescue",
+      "title": "Sauvetage d'Animal",
+      "description": "Retrouvez l'animal perdu dans la forêt. Une créature territorial le garde jalousement !",
+      "requirements": {
+        "minLevel": 1
+      },
+      "rewards": {
+        "experience": 20,
+        "gold": 15,
+        "items": [
+          "luth_enchante"
+        ]
+      },
+      "duration": 15,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "loup",
+          "required": 2,
+          "description": "Repousser 2 loups ayant capturé l'animal"
+        }
+      ]
+    },
+    {
+      "id": "bridge_repair",
+      "title": "Réparation du Pont",
+      "description": "Renforcez le vieux pont. Des créatures aquatiques attaquent les travailleurs — protégez-les !",
+      "requirements": {
+        "minLevel": 1
+      },
+      "rewards": {
+        "experience": 30,
+        "gold": 25,
+        "items": [
+          "epee_longue"
+        ]
+      },
+      "duration": 18,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "gobelin",
+          "required": 3,
+          "description": "Chasser 3 gobelins qui bloquent les travaux"
+        }
+      ]
+    },
+    {
+      "id": "bandit_raid",
+      "title": "Raid contre les Bandits",
+      "description": "Nettoyez le camp des bandits. Ils sont nombreux — préparez-vous à combattre sans relâche !",
+      "requirements": {
+        "minLevel": 3
+      },
+      "rewards": {
+        "experience": 70,
+        "gold": 55,
+        "items": [
+          "dague_empoisonnee"
+        ]
+      },
+      "duration": 40,
+      "objectives": [
+        {
+          "type": "kill_player_bandit",
+          "required": 5,
+          "description": "Éliminer 5 bandits"
+        }
+      ]
+    },
+    {
+      "id": "fishing_competition",
+      "title": "Concours de Pêche",
+      "description": "Participez au concours de pêche. Un gros monstre aquatique vole les prises — affrontez-le !",
+      "requirements": {
+        "minLevel": 1
+      },
+      "rewards": {
+        "experience": 25,
+        "gold": 30,
+        "items": [
+          "luth_enchante"
+        ]
+      },
+      "duration": 20,
+      "objectives": [
+        {
+          "type": "win_pve",
+          "required": 1,
+          "description": "Vaincre 1 créature en chemin"
+        }
+      ]
+    },
+    {
+      "id": "treasure_hunt",
+      "title": "Chasse au Trésor",
+      "description": "Suivez la vieille carte au trésor. Des gardes protègent chaque indice — battez-vous pour les obtenir !",
+      "requirements": {
+        "minLevel": 2
+      },
+      "rewards": {
+        "experience": 45,
+        "gold": 80,
+        "items": [
+          "baton_mage"
+        ]
+      },
+      "duration": 28,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "squelette",
+          "required": 2,
+          "description": "Défaire 2 gardiens squelettes"
+        },
+        {
+          "type": "kill_player_bandit",
+          "required": 1,
+          "description": "Écarter 1 bandit rival"
+        }
+      ]
+    },
+    {
+      "id": "village_festival",
+      "title": "Festival du Village",
+      "description": "Participez au festival ! Des trouble-fêtes attaquent la fête — défendez les villageois !",
+      "requirements": {
+        "minLevel": 1
+      },
+      "rewards": {
+        "experience": 35,
+        "gold": 40,
+        "items": [
+          "luth_enchante"
+        ]
+      },
+      "duration": 15,
+      "objectives": [
+        {
+          "type": "win_pvp",
+          "required": 2,
+          "description": "Remporter 2 joutes amicales au festival"
+        }
+      ]
+    },
+    {
+      "id": "ghost_investigation",
+      "title": "Enquête Paranormale",
+      "description": "Découvrez la vérité dans la maison hantée. Les entités spectrales vous attaquent — affrontez-les !",
+      "requirements": {
+        "minLevel": 4
+      },
+      "rewards": {
+        "experience": 65,
+        "gold": 45,
+        "items": [
+          "livre_sorts"
+        ]
+      },
+      "duration": 32,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "squelette",
+          "required": 3,
+          "description": "Exorciser 3 squelettes hantés"
+        }
+      ]
+    },
+    {
+      "id": "mine_exploration",
+      "title": "Exploration Minière",
+      "description": "Explorez la mine abandonnée. Des créatures souterraines y ont établi leur nid — chassez-les !",
+      "requirements": {
+        "minLevel": 2
+      },
+      "rewards": {
+        "experience": 40,
+        "gold": 35,
+        "items": [
+          "potion_defense"
+        ]
+      },
+      "duration": 22,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "gobelin",
+          "required": 3,
+          "description": "Nettoyer 3 gobelins de la mine"
+        },
+        {
+          "type": "kill_monster",
+          "monsterKey": "squelette",
+          "required": 1,
+          "description": "Détruire 1 squelette gardien"
+        }
+      ]
+    },
+    {
+      "id": "dragon_slaying",
+      "title": "Chasse au Dragon",
+      "description": "Un dragon légendaire terrorise la région. Affrontez ses serviteurs puis le dragon lui-même !",
+      "requirements": {
+        "minLevel": 8
+      },
+      "rewards": {
+        "experience": 150,
+        "gold": 200,
+        "items": [
+          "dague_empoisonnee"
+        ]
+      },
+      "duration": 60,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "dragon",
+          "required": 1,
+          "description": "Vaincre le Jeune Dragon"
+        }
+      ]
+    },
+    {
+      "id": "cooking_contest",
+      "title": "Concours Culinaire",
+      "description": "Préparez le plat royal. D'abord, partez chasser les ingrédients frais dans la forêt !",
+      "requirements": {
+        "minLevel": 1
+      },
+      "rewards": {
+        "experience": 28,
+        "gold": 45,
+        "items": [
+          "elixir_force"
+        ]
+      },
+      "duration": 14,
+      "objectives": [
+        {
+          "type": "win_pve",
+          "required": 1,
+          "description": "Chasser 1 créature pour ses ingrédients"
+        }
+      ]
+    },
+    {
+      "id": "shipwreck_recovery",
+      "title": "Récupération d'Épave",
+      "description": "Explorez l'épave avant la marée. Des pirates et créatures marines s'y terrent — affrontez-les !",
+      "requirements": {
+        "minLevel": 3
+      },
+      "rewards": {
+        "experience": 55,
+        "gold": 70,
+        "items": [
+          "grande_potion_soin"
+        ]
+      },
+      "duration": 26,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "squelette",
+          "required": 3,
+          "description": "Repousser 3 matelots-squelettes"
+        }
+      ]
+    },
+    {
+      "id": "forest_patrol",
+      "title": "Patrouille Forestière",
+      "description": "Parcourez la forêt dense pour assurer la sécurité des chemins. Neutralisez les menaces rencontrées !",
+      "requirements": {
+        "minLevel": 1
+      },
+      "rewards": {
+        "experience": 32,
+        "gold": 18,
+        "items": [
+          "potion_soin"
+        ]
+      },
+      "duration": 16,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "loup",
+          "required": 2,
+          "description": "Écarter 2 loups menaçants"
+        },
+        {
+          "type": "kill_monster",
+          "monsterKey": "gobelin",
+          "required": 1,
+          "description": "Chasser 1 gobelin embusqué"
+        }
+      ]
+    },
+    {
+      "id": "spy_mission",
+      "title": "Mission d'Espionnage",
+      "description": "Infiltrez le camp ennemi. Les sentinelles ne vous laisseront pas passer sans se battre !",
+      "requirements": {
+        "minLevel": 3
+      },
+      "rewards": {
+        "experience": 50,
+        "gold": 50,
+        "items": [
+          "dague_empoisonnee"
+        ]
+      },
+      "duration": 30,
+      "objectives": [
+        {
+          "type": "kill_player_bandit",
+          "required": 4,
+          "description": "Neutraliser 4 gardes ennemis"
+        }
+      ]
+    },
+    {
+      "id": "farmer_help",
+      "title": "Aide au Fermier",
+      "description": "Protégez les cultures du fermier. Des nuisibles et pillards attaquent — repoussez-les !",
+      "requirements": {
+        "minLevel": 1
+      },
+      "rewards": {
+        "experience": 22,
+        "gold": 20,
+        "items": [
+          "potion_soin"
+        ]
+      },
+      "duration": 12,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "gobelin",
+          "required": 2,
+          "description": "Chasser 2 gobelins des récoltes"
+        },
+        {
+          "type": "kill_monster",
+          "monsterKey": "loup",
+          "required": 1,
+          "description": "Repousser 1 loup"
+        }
+      ]
+    },
+    {
+      "id": "weapon_repair",
+      "title": "Réparation d'Armes",
+      "description": "Aidez le forgeron. Pour tester les armes réparées, affrontez les mannequins animés du château !",
+      "requirements": {
+        "minLevel": 2
+      },
+      "rewards": {
+        "experience": 38,
+        "gold": 28,
+        "items": [
+          "epee_longue"
+        ]
+      },
+      "duration": 20,
+      "objectives": [
+        {
+          "type": "win_pve",
+          "required": 2,
+          "description": "Tester les armes sur 2 adversaires"
+        }
+      ]
+    },
+    {
+      "id": "message_delivery",
+      "title": "Livraison de Message",
+      "description": "Transportez un message urgent. Les routes sont dangereuses — combattez pour passer !",
+      "requirements": {
+        "minLevel": 1
+      },
+      "rewards": {
+        "experience": 28,
+        "gold": 25,
+        "items": [
+          "potion_soin"
+        ]
+      },
+      "duration": 18,
+      "objectives": [
+        {
+          "type": "kill_player_bandit",
+          "required": 2,
+          "description": "Écarter 2 bandits embusqués"
+        }
+      ]
+    },
+    {
+      "id": "artifact_search",
+      "title": "Recherche d'Artéfact",
+      "description": "Retrouvez l'artéfact dans les ruines oubliées. Des gardiens anciens veillent sur lui !",
+      "requirements": {
+        "minLevel": 4
+      },
+      "rewards": {
+        "experience": 65,
+        "gold": 60,
+        "items": [
+          "baton_mage"
+        ]
+      },
+      "duration": 35,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "squelette",
+          "required": 2,
+          "description": "Défaire 2 gardiens squelettes de l'artéfact"
+        }
+      ]
+    },
+    {
+      "id": "theft_investigation",
+      "title": "Enquête sur un Vol",
+      "description": "Retrouvez le voleur et récupérez les objets. Le suspect résiste à son arrestation — combattez !",
+      "requirements": {
+        "minLevel": 2
+      },
+      "rewards": {
+        "experience": 42,
+        "gold": 35,
+        "items": [
+          "dague_empoisonnee"
+        ]
+      },
+      "duration": 22,
+      "objectives": [
+        {
+          "type": "kill_player_bandit",
+          "required": 3,
+          "description": "Capturer 3 membres du gang"
+        }
+      ]
+    },
+    {
+      "id": "villager_training",
+      "title": "Entraînement des Villageois",
+      "description": "Entraînez les villageois aux techniques de combat. Prouvez votre valeur en vous battant vous-même !",
+      "requirements": {
+        "minLevel": 3
+      },
+      "rewards": {
+        "experience": 48,
+        "gold": 40,
+        "items": [
+          "livre_sorts"
+        ]
+      },
+      "duration": 24,
+      "objectives": [
+        {
+          "type": "win_pvp",
+          "required": 3,
+          "description": "Remporter 3 entraînements contre des joueurs"
+        }
+      ]
+    },
+    {
+      "id": "rare_hunt",
+      "title": "Chasse Rare",
+      "description": "Traquez la créature légendaire à travers bois et montagnes. Elle ne se rendra pas sans combattre !",
+      "requirements": {
+        "minLevel": 5
+      },
+      "rewards": {
+        "experience": 80,
+        "gold": 90,
+        "items": [
+          "elixir_force"
+        ]
+      },
+      "duration": 45,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "orc",
+          "required": 2,
+          "description": "Vaincre 2 orcs"
+        },
+        {
+          "type": "kill_monster",
+          "monsterKey": "dragon",
+          "required": 1,
+          "description": "Vaincre le Jeune Dragon"
+        }
+      ]
+    },
+    {
+      "id": "potion_brewing",
+      "title": "Préparation de Potion",
+      "description": "Collectez les ingrédients rares pour l'alchimiste. Les créatures de la forêt les gardent jalousement !",
+      "requirements": {
+        "minLevel": 2
+      },
+      "rewards": {
+        "experience": 40,
+        "gold": 30,
+        "items": [
+          "grande_potion_soin"
+        ]
+      },
+      "duration": 20,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "loup",
+          "required": 1,
+          "description": "Prélever du venin de loup"
+        },
+        {
+          "type": "kill_monster",
+          "monsterKey": "squelette",
+          "required": 1,
+          "description": "Récupérer des os de squelette"
+        }
+      ]
+    },
+    {
+      "id": "tavern_cleanup",
+      "title": "Nettoyage de Taverne",
+      "description": "Nettoyez la taverne après la fête. Des ivrognes refusent de partir — chassez-les de force !",
+      "requirements": {
+        "minLevel": 1
+      },
+      "rewards": {
+        "experience": 18,
+        "gold": 22,
+        "items": [
+          "luth_enchante"
+        ]
+      },
+      "duration": 10,
+      "objectives": [
+        {
+          "type": "kill_player_bandit",
+          "required": 4,
+          "description": "Expulser 4 bandits ivres"
+        }
+      ]
+    },
+    {
+      "id": "castle_renovation",
+      "title": "Rénovation du Château",
+      "description": "Renforcez les murs du château. Des ennemis en profitent pour attaquer — défendez le chantier !",
+      "requirements": {
+        "minLevel": 2
+      },
+      "rewards": {
+        "experience": 35,
+        "gold": 32,
+        "items": [
+          "potion_defense"
+        ]
+      },
+      "duration": 25,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "gobelin",
+          "required": 3,
+          "description": "Déloger 3 gobelins des murs"
+        }
+      ]
+    },
+    {
+      "id": "mystical_ritual",
+      "title": "Rituel Mystique",
+      "description": "Participez au rituel dans les bois sacrés. Des esprits corrompus s'y opposent — purifiez-les !",
+      "requirements": {
+        "minLevel": 4
+      },
+      "rewards": {
+        "experience": 58,
+        "gold": 38,
+        "items": [
+          "livre_sorts"
+        ]
+      },
+      "duration": 28,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "squelette",
+          "required": 3,
+          "description": "Vaincre 3 squelettes pour le rituel"
+        },
+        {
+          "type": "kill_monster",
+          "monsterKey": "gobelin",
+          "required": 1,
+          "description": "Briser 1 esprit malin"
+        }
+      ]
+    },
+    {
+      "id": "bandit_negotiation",
+      "title": "Négociation avec les Bandits",
+      "description": "Négociez avec les bandits. La discussion échoue — vous devrez prouver votre force par le combat !",
+      "requirements": {
+        "minLevel": 3
+      },
+      "rewards": {
+        "experience": 52,
+        "gold": 45,
+        "items": [
+          "epee_longue"
+        ]
+      },
+      "duration": 20,
+      "objectives": [
+        {
+          "type": "kill_player_bandit",
+          "required": 3,
+          "description": "Intimider 3 bandits pour négocier"
+        }
+      ]
+    },
+    {
+      "id": "orphan_care",
+      "title": "Soin des Orphelins",
+      "description": "Prenez soin des orphelins. Des brigands menacent leur foyer — protégez-les !",
+      "requirements": {
+        "minLevel": 1
+      },
+      "rewards": {
+        "experience": 26,
+        "gold": 15,
+        "items": [
+          "luth_enchante"
+        ]
+      },
+      "duration": 15,
+      "objectives": [
+        {
+          "type": "win_pve",
+          "required": 2,
+          "description": "Protéger les orphelins en battant 2 créatures"
+        }
+      ]
+    },
+    {
+      "id": "desert_exploration",
+      "title": "Exploration Désertique",
+      "description": "Cartographiez de nouvelles routes. Des créatures du désert attaquent votre caravane !",
+      "requirements": {
+        "minLevel": 3
+      },
+      "rewards": {
+        "experience": 55,
+        "gold": 50,
+        "items": [
+          "potion_defense"
+        ]
+      },
+      "duration": 30,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "orc",
+          "required": 2,
+          "description": "Repousser 2 orcs du désert"
+        },
+        {
+          "type": "kill_monster",
+          "monsterKey": "loup",
+          "required": 1,
+          "description": "Écarter 1 loup des sables"
+        }
+      ]
+    },
+    {
+      "id": "library_catalog",
+      "title": "Catalogage de Bibliothèque",
+      "description": "Organisez les manuscrits royaux. Des golems de protection se sont activés — désactivez-les !",
+      "requirements": {
+        "minLevel": 2
+      },
+      "rewards": {
+        "experience": 30,
+        "gold": 25,
+        "items": [
+          "livre_sorts"
+        ]
+      },
+      "duration": 18,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "squelette",
+          "required": 2,
+          "description": "Exorciser 2 squelettes dans la bibliothèque"
+        }
+      ]
+    },
+    {
+      "id": "tournament_judge",
+      "title": "Juge de Tournoi",
+      "description": "Jugez le tournoi. Un participant conteste vos décisions par les armes — défendez votre honneur !",
+      "requirements": {
+        "minLevel": 4
+      },
+      "rewards": {
+        "experience": 45,
+        "gold": 55,
+        "items": [
+          "epee_longue"
+        ]
+      },
+      "duration": 20,
+      "objectives": [
+        {
+          "type": "win_pvp",
+          "required": 2,
+          "description": "Participer à 2 combats de démonstration"
+        }
+      ]
+    },
+    {
+      "id": "ship_captain",
+      "title": "Capitaine de Navire",
+      "description": "Naviguez vers l'île lointaine. Des pirates et monstres marins barrent la route — combattez-les !",
+      "requirements": {
+        "minLevel": 5
+      },
+      "rewards": {
+        "experience": 75,
+        "gold": 85,
+        "items": [
+          "baton_mage"
+        ]
+      },
+      "duration": 50,
+      "objectives": [
+        {
+          "type": "kill_monster",
+          "monsterKey": "orc",
+          "required": 3,
+          "description": "Repousser 3 pillards orcs"
+        },
+        {
+          "type": "kill_player_bandit",
+          "required": 2,
+          "description": "Neutraliser 2 mutins"
+        }
+      ]
+    }
+  ]
+}
