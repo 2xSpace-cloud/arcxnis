@@ -11,7 +11,7 @@ import CombatPage from './pages/CombatPage.jsx';
 import ShopPage from './pages/ShopPage.jsx';
 import WelcomeGuide from './components/WelcomeGuide.jsx';
 
-const API = '';
+const API = 'https://2224eec9-a1a1-4981-8534-ca0d504ed358-00-23odx0uvnrck9.kirk.replit.dev';
 
 export const UserContext = createContext(null);
 
