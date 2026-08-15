@@ -1,12 +1,14 @@
 const path = require('path');
 
-// Le '..' permet de sortir du dossier 'server' pour revenir dans 'dashboard'
-// Ensuite, Express entre dans le dossier 'client'
-app.use(express.static(path.join(__dirname, '..', 'client')));
+// process.cwd() donne la racine du projet entier sur Render
+const clientPath = path.join(process.cwd(), 'dashboard', 'client');
 
-// Envoie le fichier index.html situé dans dashboard/client/index.html
+// 1. Chargement des fichiers statiques (CSS, JS, images)
+app.use(express.static(clientPath));
+
+// 2. Envoi du fichier HTML principal sur la racine du site
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
+    res.sendFile(path.join(clientPath, 'index.html'));
 });
 
 
