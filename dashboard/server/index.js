@@ -1,40 +1,19 @@
 const path = require('path');
-
-// 1. On cherche le dossier 'dist' (ou 'build') généré par la compilation React dans dashboard
-// Si votre outil de build génère un dossier 'build', remplacez 'dist' par 'build'
-const clientBuildPath = path.join(process.cwd(), 'dashboard', 'dist'); 
-
-// 2. On sert les fichiers compilés
-app.use(express.static(clientBuildPath));
-
-// 3. On renvoie l'index.html de production
-app.get('*', (req, res) => {
-    res.sendFile(path.join(clientBuildPath, 'index.html'));
-});
-
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
 const fs = require('fs');
 const https = require('https');
 
-// Initialisation des variables d'environnement
+// 1. Initialisation des variables d'environnement
 require('dotenv').config({ path: path.join(__dirname, '../../MedievalKingdom/MedievalKingdom/.env') });
 
 const app = express();
 
-// RENDER UTILISE PORT (10000), ON S'ASSURE QU'IL PREND LE BON
+// 2. Définition du port réseau (Render utilise process.env.PORT)
 const PORT = process.env.PORT || process.env.DASHBOARD_PORT || 5000;
 
-// CONFIGURATION DES DOSSIERS STATIQUES ET DE L'ACCUEIL (PLANS ABSOLUS)
-const clientPath = path.join(process.cwd(), 'dashboard', 'client');
-app.use(express.static(clientPath));
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(clientPath, 'index.html'));
-});
-
-// REST DU CODE DE BASE (Configuration Middleware)
+// 3. Middlewares globaux (Toujours déclarer AVANT les routes)
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(session({
@@ -44,7 +23,11 @@ app.use(session({
   cookie: { secure: false, maxAge: 7 * 24 * 60 * 60 * 1000 }
 }));
 
-// CONFIGURATION DES CHEMINS DE LA BASE DE DONNÉES
+// 4. Configuration des fichiers statiques compilés par React (Dossier 'dist')
+const clientBuildPath = path.join(process.cwd(), 'dashboard', 'dist'); 
+app.use(express.static(clientBuildPath));
+
+// 5. CONFIGURATION DES CHEMINS DE LA BASE DE DONNÉES
 const DB_PATH = path.join(__dirname, '../../MedievalKingdom/MedievalKingdom/database');
 const ITEMS_PATH  = path.join(DB_PATH, 'items.json');
 const QUESTS_PATH = path.join(DB_PATH, 'quests.json');
@@ -228,7 +211,7 @@ app.post('/auth/request-code', async (req, res) => {
     ].join('\n'));
   } catch (err) {
     console.error('DM error:', err.message);
-    return res.status(500).json({ error: 'Impossible d\'envoyer le DM. Vérifiez que vos messages privés sont ouverts sur le serveur.' });
+    return res.status(500).json({ error: 'Impossible d\'envoyer le DM. Vérifiez que vos messages privés sont ouverts.' });
   }
 
   storeCode(id, code);
@@ -236,7 +219,12 @@ app.post('/auth/request-code', async (req, res) => {
   res.json({ success: true });
 });
 
-// ÉCOUTE SUR LE PORT DE RENDER
+// 6. Redirection universelle vers l'application React (À laisser tout en bas des routes)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(clientBuildPath, 'index.html'));
+});
+
+// 7. Démarrage du serveur Express
 app.listen(PORT, () => {
     console.log(`Le serveur Express tourne sur le port ${PORT}`);
 });
