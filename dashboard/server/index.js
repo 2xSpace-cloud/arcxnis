@@ -1,4 +1,13 @@
 const path = require('path');
+
+// 1. Permet à Express de charger vos fichiers CSS, images ou JS stockés dans le dossier client
+app.use(express.static(path.join(__dirname, 'client')));
+
+// 2. Envoie le fichier index.html lorsque l'on visite la page d'accueil
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'index.html'));
+});
+
 require('dotenv').config({ path: path.join(__dirname, '../../MedievalKingdom/MedievalKingdom/.env') });
 
 const express = require('express');
