@@ -1,4 +1,17 @@
 const path = require('path');
+
+// 1. On cherche le dossier 'dist' (ou 'build') généré par la compilation React dans dashboard
+// Si votre outil de build génère un dossier 'build', remplacez 'dist' par 'build'
+const clientBuildPath = path.join(process.cwd(), 'dashboard', 'dist'); 
+
+// 2. On sert les fichiers compilés
+app.use(express.static(clientBuildPath));
+
+// 3. On renvoie l'index.html de production
+app.get('*', (req, res) => {
+    res.sendFile(path.join(clientBuildPath, 'index.html'));
+});
+
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
