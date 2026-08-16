@@ -7,6 +7,12 @@ if (mongoose.connection.readyState === 0) {
     .catch(err => console.error("Erreur de connexion MongoDB :", err));
 }
 
+console.log("Tentative de connexion à MongoDB...");
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ Connecté avec succès à MongoDB !"))
+  .catch(err => console.error("❌ Erreur de connexion MongoDB :", err));
+
 // Schéma pour stocker l'intégralité de vos joueurs dans un seul document JSON (comme votre fichier actuel)
 const DatabaseSchema = new mongoose.Schema({
   key: { type: String, default: "players_backup" },
