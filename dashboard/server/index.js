@@ -5,7 +5,7 @@ const cors = require('cors');
 const fs = require('fs');
 const https = require('https');
 
-// 1. Initialisation des variables d'environnement (Déplacé au début pour garantir l'accès à MONGO_URI)
+// 1. Initialisation des variables d'environnement
 require('dotenv').config({ path: path.join(__dirname, '../../MedievalKingdom/MedievalKingdom/.env') });
 
 const mongoose = require('mongoose');
@@ -14,7 +14,7 @@ if (mongoose.connection.readyState === 0) {
 }
 
 const app = express();
-app.set('trust proxy', 1); // Permet aux cookies de session de fonctionner derrière le proxy Render
+app.set('trust proxy', 1); 
 
 // 2. Définition du port réseau
 const PORT = process.env.PORT || process.env.DASHBOARD_PORT || 5000;
@@ -29,9 +29,23 @@ app.use(session({
   cookie: { secure: true, httpOnly: true, sameSite: 'none', maxAge: 7 * 24 * 60 * 60 * 1000 }
 }));
 
-// 4. Configuration des fichiers statiques compilés par React
-const clientBuildPath = path.join(__dirname, '../client/dist'); 
-app.use(express.static(clientBuildPath));
+// 4. CORRECTIF CHEMIN : Recherche sécurisée du dossier client compile de React
+// On vérifie plusieurs variantes de chemins pour s'adapter à l'architecture exacte de Render
+let clientBuildPath = path.join(__dirname, '../client/dist'); 
+if (!fs.existsSync(clientBuildPath)) {
+  clientBuildPath = path.join(__dirname, '../../dashboard/client/dist');
+}
+if (!fs.existsSync(clientBuildPath)) {
+  clientBuildPath = path.resolve(__dirname, '..', 'client', 'dist');
+}
+
+// Servir les fichiers statiques si le dossier est trouvé
+if (fs.existsSync(clientBuildPath)) {
+  app.use(express.static(clientBuildPath));
+  console.log(`✅ Fichiers statiques du site détectés dans : ${clientBuildPath}`);
+} else {
+  console.error(`❌ ERREUR : Le dossier client compilé (dist) est introuvable sur le serveur.`);
+}
 
 // 5. Configuration des données de jeu et base de données
 const { classes, factions, monsters } = require('../../MedievalKingdom/MedievalKingdom/systems/gameData.js');
@@ -42,7 +56,7 @@ const GUILD_ID      = process.env.GUILD_ID || '';
 
 // ─── OTP store: { discordId -> { code, expiresAt, attempts } } ───────────────
 const otpStore = new Map();
-const OTP_EXPIRY_MS = 5 * 60 * 1000; // 5 minutes
+const OTP_EXPIRY_MS = 5 * 60 * 1000; 
 const MAX_ATTEMPTS  = 5;
 
 function generateCode() {
@@ -76,7 +90,6 @@ function verifyCode(discordId, inputCode) {
   return { ok: true };
 }
 
-// Cleanup expirations
 setInterval(() => {
   const now = Date.now();
   for (const [id, entry] of otpStore.entries()) {
@@ -200,9 +213,8 @@ app.post('/auth/logout', (req, res) => {
   res.json({ success: true });
 });
 
-// ─── CORRECTIFS DES ENDPOINTS ATTENDUS PAR LE FRONT-END (REACT) ───────────────
+// ─── API endpoints protégés pour le Dashboard React ───────────────────────────
 
-// 1. Route pour récupérer l'utilisateur actuellement connecté en session
 app.get('/api/user/profile', requireAuth, async (req, res) => {
   try {
     const player = await getPlayer(req.session.user.id);
@@ -213,7 +225,6 @@ app.get('/api/user/profile', requireAuth, async (req, res) => {
   }
 });
 
-// 2. Route pour les statistiques globales du serveur (Graphiques, totaux, etc.)
 app.get('/api/stats', async (req, res) => {
   try {
     const stats = await getDatabaseStats();
@@ -223,11 +234,9 @@ app.get('/api/stats', async (req, res) => {
   }
 });
 
-// 3. Route pour les classements (Rankings)
 app.get('/api/ranking', async (req, res) => {
   try {
     const players = await getAllPlayers();
-    // Trier par niveau (décroissant), puis par expérience ou or
     const sortedPlayers = players.sort((a, b) => b.level - a.level || b.experience - a.experience);
     res.json(sortedPlayers);
   } catch (error) {
@@ -235,7 +244,6 @@ app.get('/api/ranking', async (req, res) => {
   }
 });
 
-// 4. Route historique d'affichage brut par ID
 app.get("/profil/:id", async (req, res) => {
   try {
     const player = await getPlayer(req.params.id); 
@@ -246,9 +254,13 @@ app.get("/profil/:id", async (req, res) => {
   }
 });
 
-// 5. Redirection SPA (Pour éviter les erreurs 404 au rafraîchissement d'une sous-page du tableau de bord)
+// CORRECTIF REDIRECTION SPA : Servir le fichier index.html seulement si le dossier existe
 app.get('*', (req, res) => {
-  res.sendFile(path.join(clientBuildPath, 'index.html'));
+  if (fs.existsSync(path.join(clientBuildPath, 'index.html'))) {
+    res.sendFile(path.join(clientBuildPath, 'index.html'));
+  } else {
+    res.status(404).send("L'interface du site web n'a pas été trouvée à l'adresse indiquée. Vérifiez la compilation de votre front-end.");
+  }
 });
 
 // 7. Démarrage du serveur Express
