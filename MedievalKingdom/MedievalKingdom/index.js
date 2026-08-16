@@ -59,16 +59,18 @@ for (const file of eventFiles) {
   console.log(`✅ Loaded event: ${event.name}`);
 }
 
-// Restaurer les giveaways au démarrage
-client.once("ready", () => {
+// Restaurer les fonctionnalités au démarrage (Ajout de async)
+client.once("ready", async () => {
   // Migrer les anciennes données de quêtes
   try {
-    const { migrateQuestData } = require("./utils/database.js");
-    const result = migrateQuestData();
-    if (result.migratedCount > 0 || result.abandonedCount > 0) {
-      console.log(
-        `📜 Migration des quêtes: ${result.migratedCount} migrées, ${result.abandonedCount} abandonnées`,
-      );
+    const dbUtils = require("./utils/database.js");
+    if (dbUtils && typeof dbUtils.migrateQuestData === "function") {
+      const result = dbUtils.migrateQuestData();
+      if (result && (result.migratedCount > 0 || result.abandonedCount > 0)) {
+        console.log(
+          `📜 Migration des quêtes: ${result.migratedCount} migrées, ${result.abandonedCount} abandonnées`,
+        );
+      }
     }
   } catch (error) {
     console.error("Erreur lors de la migration des quêtes:", error);
@@ -83,10 +85,10 @@ client.once("ready", () => {
     console.error("Erreur lors de la restauration des giveaways:", error);
   }
 
-  // Restaurer le suivi vocal
+  // Restaurer le suivi vocal (Ajout de await car loadPlayers/getAllPlayers est maintenant async)
   try {
     const { restoreVoiceTracking } = require("./events/voiceStateUpdate.js");
-    restoreVoiceTracking(client);
+    await restoreVoiceTracking(client);
     console.log("🎤 Suivi vocal restauré au démarrage");
   } catch (error) {
     console.error("Erreur lors de la restauration du suivi vocal:", error);
@@ -105,4 +107,3 @@ process.on("uncaughtException", (error) => {
 
 // Login to Discord
 client.login(config.token);
-
