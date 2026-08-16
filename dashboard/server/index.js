@@ -5,20 +5,18 @@ const cors = require('cors');
 const fs = require('fs');
 const https = require('https');
 
+// 1. Initialisation des variables d'environnement (Déplacé au début pour garantir l'accès à MONGO_URI)
+require('dotenv').config({ path: path.join(__dirname, '../../MedievalKingdom/MedievalKingdom/.env') });
+
 const mongoose = require('mongoose');
 if (mongoose.connection.readyState === 0) {
-  mongoose.connect(process.env.MONGO_URI).catch(err => console.error(err));
+  mongoose.connect(process.env.MONGO_URI).catch(err => console.error("Erreur de connexion initiale Mongoose:", err));
 }
-
-
-// 1. Initialisation des variables d'environnement
-require('dotenv').config({ path: path.join(__dirname, '../../MedievalKingdom/MedievalKingdom/.env') });
 
 const app = express();
 app.set('trust proxy', 1); // Permet aux cookies de session de fonctionner derrière le proxy Render
 
-
-// 2. Définition du port réseau (Render utilise process.env.PORT)
+// 2. Définition du port réseau
 const PORT = process.env.PORT || process.env.DASHBOARD_PORT || 5000;
 
 // 3. Middlewares globaux
@@ -35,9 +33,9 @@ app.use(session({
 const clientBuildPath = path.join(__dirname, '../client/dist'); 
 app.use(express.static(clientBuildPath));
 
-// 5. configuration des données de jeu et base de données
+// 5. Configuration des données de jeu et base de données
 const { classes, factions, monsters } = require('../../MedievalKingdom/MedievalKingdom/systems/gameData.js');
-const { getPlayer, loadPlayers } = require('../../MedievalKingdom/MedievalKingdom/utils/database.js');
+const { getPlayer, loadPlayers, getAllPlayers, getDatabaseStats } = require('../../MedievalKingdom/MedievalKingdom/utils/database.js');
 
 const BOT_TOKEN     = process.env.DISCORD_TOKEN || '';
 const GUILD_ID      = process.env.GUILD_ID || '';
@@ -78,7 +76,7 @@ function verifyCode(discordId, inputCode) {
   return { ok: true };
 }
 
-// Cleanup expiations
+// Cleanup expirations
 setInterval(() => {
   const now = Date.now();
   for (const [id, entry] of otpStore.entries()) {
@@ -141,7 +139,6 @@ function requireAuth(req, res, next) {
 
 // ─── Auth routes ──────────────────────────────────────────────────────────────
 
-// 1. Demande de code
 app.post('/auth/request-code', async (req, res) => {
   const { discordId } = req.body;
   if (!discordId || !/^\d{15,20}$/.test(discordId.trim())) {
@@ -174,7 +171,6 @@ app.post('/auth/request-code', async (req, res) => {
   res.json({ success: true });
 });
 
-// 2. CORRECTIF AJOUTÉ : Route de vérification du code (Indispensable pour l'étape "Se Connecter")
 app.post('/auth/verify-code', async (req, res) => {
   const { discordId, code } = req.body;
 
@@ -189,7 +185,6 @@ app.post('/auth/verify-code', async (req, res) => {
     return res.status(400).json({ error: result.error });
   }
 
-  // Récupérer le joueur pour injecter la session utilisateur
   const player = await getPlayer(id);
   req.session.user = {
     id: player.id,
@@ -200,17 +195,60 @@ app.post('/auth/verify-code', async (req, res) => {
   res.json({ success: true, user: req.session.user });
 });
 
-// 3. Déconnexion
 app.post('/auth/logout', (req, res) => {
   req.session.destroy();
   res.json({ success: true });
 });
 
-// ─── API endpoints protégés ───────────────────────────────────────────────────
+// ─── CORRECTIFS DES ENDPOINTS ATTENDUS PAR LE FRONT-END (REACT) ───────────────
 
+// 1. Route pour récupérer l'utilisateur actuellement connecté en session
+app.get('/api/user/profile', requireAuth, async (req, res) => {
+  try {
+    const player = await getPlayer(req.session.user.id);
+    if (!player) return res.status(404).json({ error: 'Joueur introuvable.' });
+    res.json(player);
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors du chargement du profil.' });
+  }
+});
+
+// 2. Route pour les statistiques globales du serveur (Graphiques, totaux, etc.)
+app.get('/api/stats', async (req, res) => {
+  try {
+    const stats = await getDatabaseStats();
+    res.json(stats);
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors du chargement des statistiques.' });
+  }
+});
+
+// 3. Route pour les classements (Rankings)
+app.get('/api/ranking', async (req, res) => {
+  try {
+    const players = await getAllPlayers();
+    // Trier par niveau (décroissant), puis par expérience ou or
+    const sortedPlayers = players.sort((a, b) => b.level - a.level || b.experience - a.experience);
+    res.json(sortedPlayers);
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors du chargement du classement.' });
+  }
+});
+
+// 4. Route historique d'affichage brut par ID
 app.get("/profil/:id", async (req, res) => {
-  const player = await getPlayer(req.params.id); 
-  res.json(player);
+  try {
+    const player = await getPlayer(req.params.id); 
+    if (!player) return res.status(404).json({ error: "Personnage introuvable" });
+    res.json(player);
+  } catch (error) {
+    res.status(500).json({ error: "Erreur lors du chargement" });
+  }
+});
+
+// 5. Redirection SPA (Pour éviter les erreurs 404 au rafraîchissement d'une sous-page du tableau de bord)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(clientBuildPath, 'index.html'));
 });
 
 // 7. Démarrage du serveur Express
