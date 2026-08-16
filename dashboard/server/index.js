@@ -9,6 +9,8 @@ const https = require('https');
 require('dotenv').config({ path: path.join(__dirname, '../../MedievalKingdom/MedievalKingdom/.env') });
 
 const app = express();
+app.set('trust proxy', 1); // Permet aux cookies de session de fonctionner derrière le proxy Render
+
 
 // 2. Définition du port réseau (Render utilise process.env.PORT)
 const PORT = process.env.PORT || process.env.DASHBOARD_PORT || 5000;
