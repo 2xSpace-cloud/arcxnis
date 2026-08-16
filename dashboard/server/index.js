@@ -5,6 +5,12 @@ const cors = require('cors');
 const fs = require('fs');
 const https = require('https');
 
+const mongoose = require('mongoose');
+if (mongoose.connection.readyState === 0) {
+  mongoose.connect(process.env.MONGO_URI).catch(err => console.error(err));
+}
+
+
 // 1. Initialisation des variables d'environnement
 require('dotenv').config({ path: path.join(__dirname, '../../MedievalKingdom/MedievalKingdom/.env') });
 
