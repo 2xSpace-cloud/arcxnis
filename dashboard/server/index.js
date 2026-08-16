@@ -25,6 +25,11 @@ mongoose.connection.on('connected', () => {
 });
 
 const app = express();
+app.use((req, res, next) => {
+  console.log(`[Requête reçue] ${req.method} ${req.url}`);
+  next(); // Très important, cela permet de passer à la suite !
+});
+
 app.set('trust proxy', 1);
 
 // 2. Définition du port réseau
