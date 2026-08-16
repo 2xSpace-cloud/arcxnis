@@ -322,22 +322,30 @@ app.post('/auth/verify-code', async (req, res) => {
     const { discordId, code } = req.body || {};
     if (!discordId || !code) return res.status(400).json({ error: 'Paramètres manquants.' });
 
-    const result = verifyCodeEntry(String(discordId).trim(), String(code).trim());
-    if (!result.ok) return res.status(400).json({ error: result.error });
+    console.log(`[DEBUG AUTH] Étape 1 : Entrée dans verifyCodeEntry pour ID ${discordId} et Code ${code}`);
 
-    // 🌟 REMETTEZ CETTE LIGNE D'ORIGINE :
+    // On exécute la vérification
+    const result = verifyCodeEntry(String(discordId).trim(), String(code).trim());
+    
+    console.log("[DEBUG AUTH] Étape 2 : verifyCodeEntry a répondu !", result);
+
+    if (!result || !result.ok) return res.status(400).json({ error: result?.error || 'Code invalide.' });
+
+    console.log(`[DEBUG AUTH] Étape 3 : Appel de getPlayer...`);
     const player = await getPlayer(String(discordId).trim());
     
+    console.log("[DEBUG AUTH] Étape 4 : getPlayer a répondu !");
     if (!player) return res.status(404).json({ error: 'Aucun personnage trouvé pour cet ID.' });
 
-    // Stocker les infos essentielles en session
     req.session.user = { discordId: String(discordId).trim(), playerId: player._id };
     return res.json({ ok: true });
+
   } catch (err) {
-    console.error('/auth/verify-code', err);
+    console.error('❌ [AUTH] Erreur critique :', err);
     return res.status(500).json({ error: 'Erreur interne' });
   }
 });
+
 
 
 // Exemple de route protégée
