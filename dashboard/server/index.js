@@ -309,18 +309,10 @@ app.post('/auth/verify-code', async (req, res) => {
     const result = verifyCodeEntry(String(discordId).trim(), String(code).trim());
     if (!result.ok) return res.status(400).json({ error: result.error });
 
-    console.log("-> Début de la recherche directe du joueur dans MongoDB...");
-
-    // 🌟 RECHÈRCHE DIRECTE : On remplace getPlayer par un findOne direct sur votre Modèle Mongoose
-    // Note : Remplacez 'databases' par le nom exact de votre modèle Mongoose s'il s'appelle autrement (ex: Player, Users...)
-    const player = await databases.findOne({ discordId: String(discordId).trim() });
+    // 🌟 REMETTEZ CETTE LIGNE D'ORIGINE :
+    const player = await getPlayer(String(discordId).trim());
     
-    console.log("-> Résultat de la recherche directe :", player);
-
-    if (!player) {
-      console.log("-> Aucun joueur trouvé pour cet ID, création d'une réponse de secours.");
-      return res.status(404).json({ error: 'Aucun personnage trouvé pour cet ID.' });
-    }
+    if (!player) return res.status(404).json({ error: 'Aucun personnage trouvé pour cet ID.' });
 
     // Stocker les infos essentielles en session
     req.session.user = { discordId: String(discordId).trim(), playerId: player._id };
