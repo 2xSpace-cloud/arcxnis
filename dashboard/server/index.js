@@ -28,12 +28,10 @@ const clientBuildPath = path.join(__dirname, '../client/dist');
 app.use(express.static(clientBuildPath));
 
 // 5. CONFIGURATION DES CHEMINS DE LA BASE DE DONNÉES
-const DB_PATH = path.join(__dirname, '../../MedievalKingdom/MedievalKingdom/database');
-const ITEMS_PATH  = path.join(DB_PATH, 'items.json');
-const QUESTS_PATH = path.join(DB_PATH, 'quests.json');
-const PLAYERS_PATH = path.join(DB_PATH, 'players.json');
-
 const { classes, factions, monsters } = require('../../MedievalKingdom/MedievalKingdom/systems/gameData.js');
+
+// CORRECTIF: Importation directe de vos fonctions MongoDB Atlas asynchrones
+const { getPlayer, loadPlayers } = require('../../MedievalKingdom/MedievalKingdom/utils/database.js');
 
 const BOT_TOKEN     = process.env.DISCORD_TOKEN || '';
 const GUILD_ID      = process.env.GUILD_ID || '';
@@ -157,15 +155,6 @@ function defaultAvatarUrl(userId) {
   } catch { return 'https://discordapp.com'; }
 }
 
-function loadJSON(filePath) {
-  try { return JSON.parse(fs.readFileSync(filePath, 'utf8')); }
-  catch { return null; }
-}
-
-function loadPlayers() {
-  return loadJSON(PLAYERS_PATH) || {};
-}
-
 function requireAuth(req, res, next) {
   if (req.session?.user) return next();
   return res.status(401).json({ error: 'Non authentifié' });
@@ -193,15 +182,16 @@ app.post('/auth/request-code', async (req, res) => {
     return res.status(403).json({ error: 'Cet ID Discord n\'est pas membre du serveur Medieval Kingdom.' });
   }
 
-  const players = loadPlayers();
-  if (!players[id]) {
+  // CORRECTIF: Interrogation asynchrone directe de MongoDB pour vérifier le joueur
+  const targetPlayer = await getPlayer(id);
+  if (!targetPlayer) {
     return res.status(404).json({ error: 'Aucun personnage trouvé pour cet ID. Créez-en un avec le bot Discord d\'abord.' });
   }
 
   const code = generateCode();
   try {
     await sendDM(id, [
-      `🏰 **Medieval Kingdom — Connexion au tableau de bord**`,
+      `🏰 **Arcxnis — Connexion au tableau de bord**`,
       ``,
       `Votre code de connexion est :`,
       `## \`${code}\``,
@@ -215,16 +205,15 @@ app.post('/auth/request-code', async (req, res) => {
   }
 
   storeCode(id, code);
-  console.log(`Code envoyé à ${id} (joueur: ${players[id].name})`);
+  console.log(`Code envoyé à ${id} (joueur: ${targetPlayer.name})`);
   res.json({ success: true });
 });
 
-// 6. Redirection universelle vers l'application React (À laisser tout en bas des routes)
+// 6. Redirection universelle vers l'application React
 app.get("/profil/:id", async (req, res) => {
-  const player = await getPlayer(req.params.id); // Ajout de async/await
+  const player = await getPlayer(req.params.id); 
   res.json(player);
 });
-
 
 // 7. Démarrage du serveur Express
 app.listen(PORT, () => {
