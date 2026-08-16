@@ -2,11 +2,11 @@
   "name": "workspace",
   "version": "1.0.0",
   "main": "index.js",
-   "scripts": {
+  "scripts": {
     "start": "node dashboard/server/index.js & node MedievalKingdom/MedievalKingdom/index.js",
-    "build": "echo 'Build géré par Render'"
-
+    "build": "echo 'Build externe'"
   },
+
 
   "keywords": [],
   "author": "",
