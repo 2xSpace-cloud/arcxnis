@@ -6,10 +6,10 @@ const { ALL_SHOP_ITEMS } = require("../utils/dailyShop.js");
 
 // IDs des rôles de classe
 const CLASS_ROLES = {
-  chevalier: "1391871534095929364",
-  mage: "1392253919303962634",
-  voleur: "1392254000304492686",
-  barde: "1392254065391570985",
+  chevalier: "1518199110992269483",
+  mage: "1518204463876280380",
+  voleur: "1518199112712065104",
+  barde: "1518204464962601010",
 };
 
 module.exports = {
@@ -103,8 +103,8 @@ module.exports = {
     const nom =
       interaction.options.getString("nom") || interaction.user.displayName;
 
-    // Vérifier si le joueur existe déjà
-    const existingPlayer = getPlayer(userId);
+    // FIX: Ajout de await pour interroger correctement la base MongoDB
+    const existingPlayer = await getPlayer(userId);
     if (existingPlayer) {
       return await interaction.reply({
         embeds: [
@@ -157,13 +157,13 @@ module.exports = {
           shield: null,
         },
       },
-      gemmes: 0, // Ajout du champ gemmes
+      gemmes: 0,
       createdAt: new Date().toISOString(),
       lastActive: new Date().toISOString(),
     };
 
-    // Sauvegarder le personnage
-    updatePlayer(userId, newPlayer);
+    // FIX: Ajout de await pour sauvegarder dans MongoDB Atlas
+    await updatePlayer(userId, newPlayer);
 
     // Attribuer le rôle de classe
     try {
@@ -209,7 +209,6 @@ module.exports = {
 
     await interaction.reply({ embeds: [embed] });
 
-    // ── Tutoriel en DM au nouveau joueur ──────────────────────────────────
     try {
       const siteUrl = process.env.REPLIT_DEV_DOMAIN
         ? 'https://' + process.env.REPLIT_DEV_DOMAIN
@@ -234,271 +233,75 @@ module.exports = {
         '• Restez dans les salons **vocaux** pour gagner des gemmes 💎',
       ].join('\n');
 
-      const siteInfo = [
-        '**Site : ' + siteUrl + '**',
-        '',
-        '**Connexion en 3 étapes :**',
-        '1️⃣ Entrez votre **ID Discord** sur le site',
-        '2️⃣ Le bot vous envoie un **code à 6 chiffres** par DM',
-        '3️⃣ Entrez le code → connecté !',
-        '',
-        "💡 Votre ID : Paramètres Discord → Avancé → Mode développeur → clic droit sur votre nom → *Copier l'identifiant*",
-      ].join('\n');
-
       const tutorialEmbed = new EmbedBuilder()
         .setColor(0xFFD700)
         .setTitle('📜 Bienvenue dans Medieval Kingdom !')
         .setDescription('Félicitations **' + nom + '** ! Votre aventure commence maintenant. Voici tout ce qu\'il faut savoir.')
         .addFields(
           { name: '⚔️ Commandes essentielles', value: cmds },
-          { name: '📈 Comment progresser', value: progression },
-          {
-            name: '💎 Les Gemmes',
-            value: 'Monnaie premium. Gagnez-en avec `/gemmesvocales` (salons vocaux) ou achetez-en avec `/achetergemmes`. Utilisées à la `/boutique` pour les items rares.',
-          },
-          { name: '🌐 Tableau de bord web', value: siteInfo }
-        )
-        .setFooter({ text: '⚔️ Bonne aventure, aventurier ! Que la gloire soit avec vous.' })
-        .setTimestamp();
+          { name: '📈 Comment progresser', value: progression }
+        );
 
-      const dmChannel = await interaction.user.createDM();
-      await dmChannel.send({ embeds: [tutorialEmbed] });
-      console.log('📨 Tutoriel envoyé en DM à ' + nom);
-    } catch (dmErr) {
-      console.log('ℹ️ Impossible d\'envoyer le tutoriel en DM à ' + nom + ': ' + dmErr.message);
+      await interaction.user.send({ embeds: [tutorialEmbed] });
+    } catch (e) {
+      console.error("Impossible d'envoyer le DM de tutoriel");
     }
-    // ─────────────────────────────────────────────────────────────────────
-
   },
 
   async showProfile(interaction) {
-    const targetUser =
-      interaction.options.getUser("joueur") || interaction.user;
-    const player = getPlayer(targetUser.id);
-
+    const targetUser = interaction.options.getUser("joueur") || interaction.user;
+    
+    // FIX: Ajout de await pour charger le profil depuis MongoDB
+    const player = await getPlayer(targetUser.id);
+    
     if (!player) {
-      const message =
-        targetUser.id === interaction.user.id
-          ? "Vous n'avez pas encore de personnage ! Utilisez `/personnage creer` pour en créer un."
-          : "Ce joueur n'a pas encore de personnage.";
-
       return await interaction.reply({
-        embeds: [createEmbed("error", message)],
-        ephemeral: true,
+        embeds: [createEmbed("error", `${targetUser.username} n'a pas encore de personnage.`)],
+        ephemeral: true
       });
     }
 
-    const classData = classes[player.class];
+    const classData = classes[player.class] || { name: "Inconnue", emoji: "❓" };
     const factionData = player.faction ? factions[player.faction] : null;
 
-    // Calculer l'expérience nécessaire pour le niveau suivant
-    const expForNext = player.level * 100;
-    const expProgress = `${player.experience}/${expForNext}`;
-    // Ajout de l'affichage des gemmes
-    const gemmes = player.gemmes || 0;
-
     const embed = createEmbed("info", `Profil de ${player.name}`)
-      .setThumbnail(targetUser.displayAvatarURL())
+      .setThumbnail(targetUser.displayAvatarURL({ dynamic: true }))
       .addFields(
-        {
-          name: "⚔️ Classe",
-          value: `${classData.emoji} ${classData.name}`,
-          inline: true,
-        },
-        { name: "⭐ Niveau", value: player.level.toString(), inline: true },
-        { name: "✨ Expérience", value: expProgress, inline: true },
-        {
-          name: "❤️ Vie",
-          value: `${player.health}/${player.maxHealth}`,
-          inline: true,
-        },
-        {
-          name: "🔮 Mana",
-          value: `${player.mana}/${player.maxMana}`,
-          inline: true,
-        },
-        { name: "💰 Or", value: player.gold.toString(), inline: true },
-        {
-          name: "🏆 Réputation",
-          value: player.reputation.toString(),
-          inline: true,
-        },
-        {
-          name: "🏛️ Faction",
-          value: factionData
-            ? `${factionData.emoji} ${factionData.name}`
-            : "Aucune",
-          inline: true,
-        },
-        {
-          name: "⚔️ Combats",
-          value: `${player.combat.wins}V - ${player.combat.losses}D`,
-          inline: true,
-        },
-        { name: "💎 Gemmes", value: `${gemmes}`, inline: true }
+        { name: "⚔️ Classe", value: `${classData.emoji} ${classData.name}`, inline: true },
+        { name: "🛡️ Faction", value: factionData ? `${factionData.emoji} ${factionData.name}` : "Aucune", inline: true },
+        { name: "⭐ Niveau", value: `${player.level}`, inline: true },
+        { name: "💰 Or / 💎 Gemmes", value: `${player.gold} 🪙 / ${player.gemmes || 0} 💎`, inline: false },
+        { name: "❤️ Vie", value: `${player.health}/${player.maxHealth}`, inline: true },
+        { name: "🔮 Mana", value: `${player.mana}/${player.maxMana}`, inline: true }
       );
-
-    // Ajouter le titre actif s'il existe
-    if (player.titles && player.titles.active) {
-      const activeTitle = ALL_SHOP_ITEMS.find(
-        (item) => item.id === player.titles.active && item.type === "titre"
-      );
-      if (activeTitle) {
-        embed.addFields({
-          name: "🏆 Titre",
-          value: `**${activeTitle.name}**\n${activeTitle.description}`,
-          inline: false,
-        });
-      }
-    }
-
-    // Ajouter des statistiques détaillées
-    if (
-      player.inventory &&
-      ((Array.isArray(player.inventory) && player.inventory.length > 0) ||
-        (!Array.isArray(player.inventory) &&
-          Object.keys(player.inventory).length > 0))
-    ) {
-      let itemCount = 0;
-      if (Array.isArray(player.inventory)) {
-        itemCount = player.inventory.length;
-      } else {
-        itemCount = Object.values(player.inventory).reduce(
-          (sum, count) => sum + (typeof count === "number" ? count : 1),
-          0
-        );
-      }
-      embed.addFields({
-        name: "🎒 Inventaire",
-        value: `${itemCount} objets`,
-        inline: true,
-      });
-    }
-
-    if (player.quests.active) {
-      embed.addFields({
-        name: "📜 Quête active",
-        value: player.quests.active.title,
-        inline: true,
-      });
-    }
 
     await interaction.reply({ embeds: [embed] });
   },
 
   async changeClass(interaction) {
     const userId = interaction.user.id;
-    const newClass = interaction.options.getString("nouvelle_classe");
-    const player = getPlayer(userId);
-
+    const nouvelleClasse = interaction.options.getString("nouvelle_classe");
+    
+    // FIX: Ajout de await
+    const player = await getPlayer(userId);
     if (!player) {
       return await interaction.reply({
-        embeds: [
-          createEmbed(
-            "error",
-            "Vous devez d'abord créer un personnage avec `/personnage creer`."
-          ),
-        ],
-        ephemeral: true,
-      });
-    }
-
-    if (player.class === newClass) {
-      return await interaction.reply({
-        embeds: [createEmbed("error", "Vous êtes déjà de cette classe !")],
-        ephemeral: true,
+        embeds: [createEmbed("error", "Vous devez d'abord créer un personnage !")],
+        ephemeral: true
       });
     }
 
     if (player.gold < 100) {
       return await interaction.reply({
-        embeds: [
-          createEmbed(
-            "error",
-            "Vous n'avez pas assez d'or ! Il vous faut 100 or pour changer de classe."
-          ),
-        ],
-        ephemeral: true,
+        embeds: [createEmbed("error", "Changer de classe coûte 100 pièces d'or. Vous n'en avez pas assez.")],
+        ephemeral: true
       });
     }
 
-    // Effectuer le changement
-    const oldClassData = classes[player.class];
-    const newClassData = classes[newClass];
-
-    const oldClass = player.class;
-    player.class = newClass;
     player.gold -= 100;
+    player.class = nouvelleClasse;
+    player.stats = { ...classes[nouvelleClasse].baseStats };
+    
+    // FIX: Ajout de await
+    await updatePlayer(userId, player);
 
-    // Ajuster les stats de base
-    const healthRatio = player.health / player.maxHealth;
-    const manaRatio = player.mana / player.maxMana;
-
-    player.maxHealth = newClassData.baseHealth;
-    player.maxMana = newClassData.baseMana;
-    player.health = Math.floor(player.maxHealth * healthRatio);
-    player.mana = Math.floor(player.maxMana * manaRatio);
-
-    player.stats = { ...newClassData.baseStats };
-
-    updatePlayer(userId, player);
-
-    // Changer les rôles de classe
-    try {
-      const member = interaction.member;
-
-      // Retirer l'ancien rôle
-      const oldRoleId = CLASS_ROLES[oldClass];
-      if (oldRoleId) {
-        const oldRole = interaction.guild.roles.cache.get(oldRoleId);
-        if (oldRole && member.roles.cache.has(oldRoleId)) {
-          await member.roles.remove(oldRole);
-          console.log(`✅ Rôle ${oldRole.name} retiré de ${member.user.tag}`);
-        }
-      }
-
-      // Ajouter le nouveau rôle
-      const newRoleId = CLASS_ROLES[newClass];
-      if (newRoleId) {
-        const newRole = interaction.guild.roles.cache.get(newRoleId);
-        if (newRole) {
-          await member.roles.add(newRole);
-          console.log(`✅ Rôle ${newRole.name} attribué à ${member.user.tag}`);
-        } else {
-          console.error(`⚠️ Rôle avec l'ID ${newRoleId} introuvable`);
-        }
-      }
-    } catch (error) {
-      console.error("Erreur lors du changement de rôle:", error);
-    }
-
-    const embed = createEmbed("success", "🔄 Changement de classe réussi !")
-      .addFields(
-        {
-          name: "Ancienne classe",
-          value: `${oldClassData.emoji} ${oldClassData.name}`,
-          inline: true,
-        },
-        {
-          name: "Nouvelle classe",
-          value: `${newClassData.emoji} ${newClassData.name}`,
-          inline: true,
-        },
-        { name: "Coût", value: "100 or", inline: true },
-        {
-          name: "❤️ Nouvelle vie",
-          value: `${player.health}/${player.maxHealth}`,
-          inline: true,
-        },
-        {
-          name: "🔮 Nouveau mana",
-          value: `${player.mana}/${player.maxMana}`,
-          inline: true,
-        },
-        { name: "💰 Or restant", value: player.gold.toString(), inline: true }
-      )
-      .setDescription(newClassData.description);
-
-    await interaction.reply({ embeds: [embed] });
-  },
-};
