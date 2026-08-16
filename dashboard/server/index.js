@@ -9,9 +9,25 @@ const https = require('https');
 require('dotenv').config({ path: path.join(__dirname, '../../MedievalKingdom/MedievalKingdom/.env') });
 
 const mongoose = require('mongoose');
+
+// 1. Désactive la mise en attente infinie des requêtes si la connexion rame
+mongoose.set('bufferCommands', false);
+
+// 2. Optionnel : Active les logs pour voir les requêtes Mongoose en direct dans Render
+mongoose.set('debug', true);
+
 if (mongoose.connection.readyState === 0) {
-  mongoose.connect(process.env.MONGO_URI).catch(err => console.error('Erreur de connexion initiale Mongoose:', err));
+  console.log("🔄 Initialisation de la connexion à MongoDB Atlas...");
+  
+  mongoose.connect(process.env.MONGO_URI, {
+    serverSelectionTimeoutMS: 5000, // Abandonne après 5 secondes si la base de données ne répond pas
+  })
+  .then(() => console.log('✅ Connexion physique à MongoDB réussie !'))
+  .catch(err => {
+    console.error('❌ ERREUR CRITIQUE DE CONNEXION MONGOOSE:', err);
+  });
 }
+
 // Force Mongoose à afficher toutes les requêtes de base de données dans la console Render
 mongoose.set('debug', true); 
 
