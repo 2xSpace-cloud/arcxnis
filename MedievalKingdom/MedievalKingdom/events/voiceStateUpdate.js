@@ -200,7 +200,7 @@ module.exports = {
   async restoreVoiceTracking(client) {
     console.log("🔄 Restauration du suivi vocal...");
     const { getAllPlayers } = require("../utils/database");
-    const players = getAllPlayers();
+    const players = await getAllPlayers();
 
     for (const player of players) {
       if (player.voiceGemmes?.joinTime) {
