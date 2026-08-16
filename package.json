@@ -4,7 +4,8 @@
   "main": "index.js",
    "scripts": {
     "start": "node dashboard/server/index.js & node MedievalKingdom/MedievalKingdom/index.js",
-    "build": "cd dashboard/server && npm install && cd ../client && npm install && npm run build && cd ../../MedievalKingdom/MedievalKingdom && npm install"
+    "build": "echo 'Build géré par Render'"
+
   },
 
   "keywords": [],
