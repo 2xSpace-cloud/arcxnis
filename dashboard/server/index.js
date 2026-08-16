@@ -30,21 +30,38 @@ app.use(session({
 }));
 
 // 4. CORRECTIF CHEMIN : Recherche sécurisée du dossier client compile de React
-// On vérifie plusieurs variantes de chemins pour s'adapter à l'architecture exacte de Render
-let clientBuildPath = path.join(__dirname, '../client/dist'); 
-if (!fs.existsSync(clientBuildPath)) {
-  clientBuildPath = path.join(__dirname, '../../dashboard/client/dist');
-}
-if (!fs.existsSync(clientBuildPath)) {
-  clientBuildPath = path.resolve(__dirname, '..', 'client', 'dist');
+// 4. CORRECTIF CHEMIN UNIVERSEL : Liaison absolue avec le front-end React
+// Cette configuration s'adapte automatiquement à l'arborescence Render
+const POSSIBLE_PATHS = [
+  path.join(__dirname, '../client/dist'),
+  path.join(__dirname, '../../dashboard/client/dist'),
+  path.resolve(__dirname, '..', 'client', 'dist'),
+  path.join(process.cwd(), 'dashboard/client/dist'),
+  path.join(process.cwd(), 'client/dist')
+];
+
+let clientBuildPath = "";
+for (const p of POSSIBLE_PATHS) {
+  if (fs.existsSync(p) && fs.existsSync(path.join(p, 'index.html'))) {
+    clientBuildPath = p;
+    break;
+  }
 }
 
-// Servir les fichiers statiques si le dossier est trouvé
-if (fs.existsSync(clientBuildPath)) {
+if (clientBuildPath) {
   app.use(express.static(clientBuildPath));
-  console.log(`✅ Fichiers statiques du site détectés dans : ${clientBuildPath}`);
+  console.log(`✅ Dossier Web trouvé et activé : ${clientBuildPath}`);
+  
+  // Forcer explicitement la route d'accueil pour éliminer définitivement le "Cannot GET /"
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(clientBuildPath, 'index.html'));
+  });
 } else {
-  console.error(`❌ ERREUR : Le dossier client compilé (dist) est introuvable sur le serveur.`);
+  console.error(`❌ CRITIQUE : Le dossier "dist" contenant les fichiers du site web est introuvable.`);
+  // Mesure de secours pour éviter l'écran blanc si Render n'a pas compilé le client :
+  app.get('/', (req, res) => {
+    res.send("<h1>Serveur Actif</h1><p>Le serveur de l'API fonctionne, mais les fichiers du site web n'ont pas fini de compiler ou sont mal placés.</p>");
+  });
 }
 
 // 5. Configuration des données de jeu et base de données
