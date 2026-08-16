@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-  "start": "node dashboard/server/index.js & node MedievalKingdom/MedievalKingdom/index.js"
+  "start": "concurrently \"node dashboard/server/index.js\" \"node MedievalKingdom/MedievalKingdom/index.js\""
 },
-
   "keywords": [],
   "author": "",
   "license": "ISC",
