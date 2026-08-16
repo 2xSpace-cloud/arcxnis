@@ -2,9 +2,9 @@
   "name": "workspace",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
+    "scripts": {
     "start": "node dashboard/server/index.js & node MedievalKingdom/MedievalKingdom/index.js",
-    "build": "vite build"
+    "build": "cd dashboard/server && npm install"
   },
   "keywords": [],
   "author": "",
