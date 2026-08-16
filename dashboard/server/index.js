@@ -29,38 +29,105 @@ app.use(session({
   cookie: { secure: true, httpOnly: true, sameSite: 'none', maxAge: 7 * 24 * 60 * 60 * 1000 }
 }));
 
-// 4. CORRECTIF CHEMIN : Recherche sécurisée du dossier client compile de React
-// 4. CORRECTIF CHEMIN UNIVERSEL : Liaison absolue avec le front-end React
-// Cette configuration s'adapte automatiquement à l'arborescence Render
-const POSSIBLE_PATHS = [
-  path.join(__dirname, '../client/dist'),
-  path.join(__dirname, '../../dashboard/client/dist'),
-  path.resolve(__dirname, '..', 'client', 'dist'),
-  path.join(process.cwd(), 'dashboard/client/dist'),
-  path.join(process.cwd(), 'client/dist')
-];
+// 4. CONFIGURATION SÉCURISÉE DU FRONT-END
+const clientBuildPath = path.join(__dirname, '../client/dist'); 
 
-let clientBuildPath = "";
-for (const p of POSSIBLE_PATHS) {
-  if (fs.existsSync(p) && fs.existsSync(path.join(p, 'index.html'))) {
-    clientBuildPath = p;
-    break;
-  }
-}
-
-if (clientBuildPath) {
+// On n'active l'envoi des fichiers statiques que si le dossier compilé existe réellement
+if (fs.existsSync(clientBuildPath) && fs.existsSync(path.join(clientBuildPath, 'index.html'))) {
   app.use(express.static(clientBuildPath));
-  console.log(`✅ Dossier Web trouvé et activé : ${clientBuildPath}`);
-  
-  // Forcer explicitement la route d'accueil pour éliminer définitivement le "Cannot GET /"
   app.get('/', (req, res) => {
     res.sendFile(path.join(clientBuildPath, 'index.html'));
   });
 } else {
-  console.error(`❌ CRITIQUE : Le dossier "dist" contenant les fichiers du site web est introuvable.`);
-  // Mesure de secours pour éviter l'écran blanc si Render n'a pas compilé le client :
+  // CORRECTIF RADICAL : Si React est introuvable, on génère une interface HTML propre pour la connexion
   app.get('/', (req, res) => {
-    res.send("<h1>Serveur Actif</h1><p>Le serveur de l'API fonctionne, mais les fichiers du site web n'ont pas fini de compiler ou sont mal placés.</p>");
+    res.send(`
+      <!DOCTYPE html>
+      <html lang="fr">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Medieval Kingdom - Connexion de secours</title>
+        <style>
+          body { background-color: #1a1a1a; color: #f3f3f3; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+          .card { background: #2a2a2a; padding: 30px; border-radius: 10px; border: 2px solid #ffd700; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); width: 350px; }
+          h1 { color: #ffd700; margin-bottom: 20px; font-size: 24px; }
+          input { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #555; background: #333; color: #fff; box-sizing: border-box; text-align: center; font-size: 16px; }
+          button { background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; border: none; padding: 12px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 16px; transition: transform 0.2s; }
+          button:hover { transform: scale(1.02); }
+          .error { color: #ff4d4d; margin-top: 15px; display: none; font-size: 14px; }
+          .success { color: #4dff4d; margin-top: 15px; display: none; font-size: 14px; }
+        </style>
+      </head>
+      <body>
+        <div class="card">
+          <h1>🏰 MEDIEVAL KINGDOM</h1>
+          <p>Entrez votre ID Discord pour recevoir votre code d'accès :</p>
+          <input type="text" id="discordId" placeholder="Ex: 885871979612241930">
+          <button onclick="requestCode()">Demander un code</button>
+          
+          <div id="otpSection" style="display:none; margin-top: 20px; border-top: 1px solid #444; padding-top: 20px;">
+            <p>Entrez le code reçu par DM :</p>
+            <input type="text" id="otpCode" placeholder="Code à 6 chiffres">
+            <button onclick="verifyCode()">Se connecter</button>
+          </div>
+          
+          <div id="errorMsg" class="error"></div>
+          <div id="successMsg" class="success"></div>
+        </div>
+
+        <script>
+          async function requestCode() {
+            const id = document.getElementById('discordId').value;
+            const errorDiv = document.getElementById('errorMsg');
+            const successDiv = document.getElementById('successMsg');
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+
+            try {
+              const res = await fetch('/auth/request-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ discordId: id })
+              });
+              const data = await res.json();
+              if (!res.ok) throw new Error(data.error || 'Erreur serveur');
+              
+              successDiv.innerText = "Code envoyé par DM ! Checkez vos messages privés.";
+              successDiv.style.display = 'block';
+              document.getElementById('otpSection').style.display = 'block';
+            } catch(e) {
+              errorDiv.innerText = e.message;
+              errorDiv.style.display = 'block';
+            }
+          }
+
+          async function verifyCode() {
+            const id = document.getElementById('discordId').value;
+            const code = document.getElementById('otpCode').value;
+            const errorDiv = document.getElementById('errorMsg');
+            errorDiv.style.display = 'none';
+
+            try {
+              const res = await fetch('/auth/verify-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ discordId: id, code: code })
+              });
+              const data = await res.json();
+              if (!res.ok) throw new Error(data.error || 'Code invalide');
+              
+              // Redirection vers le profil si connecté
+              window.location.href = '/profil/' + id;
+            } catch(e) {
+              errorDiv.innerText = e.message;
+              errorDiv.style.display = 'block';
+            }
+          }
+        </script>
+      </body>
+      </html>
+    `);
   });
 }
 
@@ -181,106 +248,3 @@ app.post('/auth/request-code', async (req, res) => {
     return res.status(403).json({ error: 'Cet ID Discord n\'est pas membre du serveur.' });
   }
 
-  const targetPlayer = await getPlayer(id);
-  if (!targetPlayer) {
-    return res.status(404).json({ error: 'Aucun personnage trouvé pour cet ID.' });
-  }
-
-  const code = generateCode();
-  try {
-    await sendDM(id, [
-      `🏰 **Medieval Kingdom — Connexion au tableau de bord**`,
-      `Votre code de connexion est : ## \`${code}\``,
-      `⏱️ Expire dans 5 minutes.`
-    ].join('\n'));
-  } catch (err) {
-    return res.status(500).json({ error: 'Impossible d\'envoyer le DM.' });
-  }
-
-  storeCode(id, code);
-  res.json({ success: true });
-});
-
-app.post('/auth/verify-code', async (req, res) => {
-  const { discordId, code } = req.body;
-
-  if (!discordId || !code) {
-    return res.status(400).json({ error: 'Identifiant ou code manquant.' });
-  }
-
-  const id = discordId.trim();
-  const result = verifyCode(id, code);
-
-  if (!result.ok) {
-    return res.status(400).json({ error: result.error });
-  }
-
-  const player = await getPlayer(id);
-  req.session.user = {
-    id: player.id,
-    name: player.name,
-    class: player.class
-  };
-
-  res.json({ success: true, user: req.session.user });
-});
-
-app.post('/auth/logout', (req, res) => {
-  req.session.destroy();
-  res.json({ success: true });
-});
-
-// ─── API endpoints protégés pour le Dashboard React ───────────────────────────
-
-app.get('/api/user/profile', requireAuth, async (req, res) => {
-  try {
-    const player = await getPlayer(req.session.user.id);
-    if (!player) return res.status(404).json({ error: 'Joueur introuvable.' });
-    res.json(player);
-  } catch (error) {
-    res.status(500).json({ error: 'Erreur lors du chargement du profil.' });
-  }
-});
-
-app.get('/api/stats', async (req, res) => {
-  try {
-    const stats = await getDatabaseStats();
-    res.json(stats);
-  } catch (error) {
-    res.status(500).json({ error: 'Erreur lors du chargement des statistiques.' });
-  }
-});
-
-app.get('/api/ranking', async (req, res) => {
-  try {
-    const players = await getAllPlayers();
-    const sortedPlayers = players.sort((a, b) => b.level - a.level || b.experience - a.experience);
-    res.json(sortedPlayers);
-  } catch (error) {
-    res.status(500).json({ error: 'Erreur lors du chargement du classement.' });
-  }
-});
-
-app.get("/profil/:id", async (req, res) => {
-  try {
-    const player = await getPlayer(req.params.id); 
-    if (!player) return res.status(404).json({ error: "Personnage introuvable" });
-    res.json(player);
-  } catch (error) {
-    res.status(500).json({ error: "Erreur lors du chargement" });
-  }
-});
-
-// CORRECTIF REDIRECTION SPA : Servir le fichier index.html seulement si le dossier existe
-app.get('*', (req, res) => {
-  if (fs.existsSync(path.join(clientBuildPath, 'index.html'))) {
-    res.sendFile(path.join(clientBuildPath, 'index.html'));
-  } else {
-    res.status(404).send("L'interface du site web n'a pas été trouvée à l'adresse indiquée. Vérifiez la compilation de votre front-end.");
-  }
-});
-
-// 7. Démarrage du serveur Express
-app.listen(PORT, () => {
-    console.log(`Le serveur Express tourne sur le port ${PORT}`);
-});
