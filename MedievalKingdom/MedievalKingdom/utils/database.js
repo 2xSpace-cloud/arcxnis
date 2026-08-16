@@ -12,6 +12,18 @@ console.log("Tentative de connexion à MongoDB...");
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Connecté avec succès à MongoDB !"))
   .catch(err => console.error("❌ Erreur de connexion MongoDB :", err));
+// Force Mongoose à afficher toutes les requêtes de base de données dans la console Render
+mongoose.set('debug', true); 
+
+// Écoute les erreurs de connexion à chaud
+mongoose.connection.on('error', err => {
+  console.error('❌ ERREUR DIRECTE MONGODB :', err);
+});
+
+mongoose.connection.on('connected', () => {
+  console.log('✅ Mongoose est bien connecté à la base de données !');
+});
+
 
 // Schéma pour stocker l'intégralité de vos joueurs dans un seul document JSON (comme votre fichier actuel)
 const DatabaseSchema = new mongoose.Schema({
