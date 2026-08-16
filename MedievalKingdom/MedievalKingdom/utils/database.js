@@ -1,88 +1,74 @@
-const fs = require("fs");
-const path = require("path");
+const mongoose = require("mongoose");
 
-// Chemin vers le fichier de base de données des joueurs
-const PLAYERS_FILE = path.join(__dirname, "../database/players.json");
+// Connexion à MongoDB Atlas (via la variable d'environnement sur Render)
+if (mongoose.connection.readyState === 0) {
+  mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("Connecté à MongoDB Atlas avec succès !"))
+    .catch(err => console.error("Erreur de connexion MongoDB :", err));
+}
+
+// Schéma pour stocker l'intégralité de vos joueurs dans un seul document JSON (comme votre fichier actuel)
+const DatabaseSchema = new mongoose.Schema({
+  key: { type: String, default: "players_backup" },
+  data: { type: Object, default: {} }
+}, { timestamps: true });
+
+const DatabaseModel = mongoose.model("Database", DatabaseSchema);
 
 /**
- * Charge les données des joueurs depuis le fichier JSON
+ * Charge les données des joueurs depuis MongoDB Atlas
  */
-function loadPlayers() {
+async function loadPlayers() {
   try {
-    if (!fs.existsSync(PLAYERS_FILE)) {
-      // Créer le fichier s'il n'existe pas
-      savePlayersData({});
-      return {};
+    let doc = await DatabaseModel.findOne({ key: "players_backup" });
+    if (!doc) {
+      // Si la base est vide, on initialise un objet vide
+      doc = await DatabaseModel.create({ key: "players_backup", data: {} });
     }
-
-    const data = fs.readFileSync(PLAYERS_FILE, "utf8");
-    return JSON.parse(data);
+    return doc.data || {};
   } catch (error) {
-    console.error("Erreur lors du chargement des données des joueurs:", error);
+    console.error("Erreur lors du chargement des données depuis MongoDB:", error);
     return {};
   }
 }
 
 /**
- * Sauvegarde les données des joueurs dans le fichier JSON
+ * Sauvegarde les données des joueurs dans MongoDB Atlas
  */
-function savePlayersData(players) {
+async function savePlayersData(players) {
   try {
-    // Créer le dossier database s'il n'existe pas
-    const dbDir = path.dirname(PLAYERS_FILE);
-    if (!fs.existsSync(dbDir)) {
-      fs.mkdirSync(dbDir, { recursive: true });
-    }
-
-    const tempFile = PLAYERS_FILE + ".tmp";
-
-    // Créer une sauvegarde automatique si le fichier principal existe et contient des données
-    if (fs.existsSync(PLAYERS_FILE)) {
-      const currentData = fs.readFileSync(PLAYERS_FILE, "utf8");
-      const currentPlayers = JSON.parse(currentData);
-      if (Object.keys(currentPlayers).length > 0) {
-        const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-        const backupDir = '/tmp/medieval_backups';
-        if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
-        const backupPath = path.join(backupDir, `auto_backup_players_${timestamp}.json`);
-        fs.writeFileSync(backupPath, currentData);
-        console.log(`Sauvegarde automatique créée: ${backupPath}`);
-      }
-    }
-
-    // Écriture directe (renameSync nécessite un répertoire accessible en écriture)
-    fs.writeFileSync(PLAYERS_FILE, JSON.stringify(players, null, 2));
-  } catch (error) {
-    console.error(
-      "Erreur lors de la sauvegarde des données des joueurs:",
-      error,
+    await DatabaseModel.updateOne(
+      { key: "players_backup" },
+      { $set: { data: players } },
+      { upsert: true }
     );
+    console.log("Données des joueurs sauvegardées sur MongoDB Atlas.");
+  } catch (error) {
+    console.error("Erreur lors de la sauvegarde des données sur MongoDB:", error);
   }
 }
 
 /**
  * Récupère un joueur par son ID Discord
  */
-function getPlayer(userId) {
-  const players = loadPlayers();
+async function getPlayer(userId) {
+  const players = await loadPlayers();
   return players[userId] || null;
 }
 
 /**
  * Met à jour ou crée un joueur
  */
-function updatePlayer(userId, playerData) {
-  const players = loadPlayers();
+async function updatePlayer(userId, playerData) {
+  const players = await loadPlayers();
 
-  // Mettre à jour la timestamp de dernière activité
   playerData.lastActive = new Date().toISOString();
 
-  // Fusionner avec l'existant pour éviter d'écraser des champs non fournis
   const existing = players[userId] || {};
   const merged = { ...existing, ...playerData };
 
   players[userId] = merged;
-  savePlayersData(players);
+  await savePlayersData(players);
 
   console.log(`Joueur ${merged.name || userId} (${userId}) mis à jour`);
 }
@@ -90,13 +76,13 @@ function updatePlayer(userId, playerData) {
 /**
  * Supprime un joueur de la base de données
  */
-function deletePlayer(userId) {
-  const players = loadPlayers();
+async function deletePlayer(userId) {
+  const players = await loadPlayers();
 
   if (players[userId]) {
     const playerName = players[userId].name;
     delete players[userId];
-    savePlayersData(players);
+    await savePlayersData(players);
     console.log(`Joueur ${playerName} (${userId}) supprimé`);
     return true;
   }
@@ -107,34 +93,32 @@ function deletePlayer(userId) {
 /**
  * Récupère tous les joueurs
  */
-function getAllPlayers() {
-  const players = loadPlayers();
+async function getAllPlayers() {
+  const players = await loadPlayers();
   return Object.values(players).filter((player) => player.active !== false);
 }
 
 /**
  * Récupère les joueurs par faction
  */
-function getPlayersByFaction(factionName) {
-  const players = loadPlayers();
-  return Object.values(players).filter(
-    (player) => player.faction === factionName,
-  );
+async function getPlayersByFaction(factionName) {
+  const players = await loadPlayers();
+  return Object.values(players).filter((player) => player.faction === factionName);
 }
 
 /**
  * Récupère les joueurs par classe
  */
-function getPlayersByClass(className) {
-  const players = loadPlayers();
+async function getPlayersByClass(className) {
+  const players = await loadPlayers();
   return Object.values(players).filter((player) => player.class === className);
 }
 
 /**
- * Recherche un joueur par nom (recherche partielle, insensible à la casse)
+ * Recherche un joueur par nom
  */
-function findPlayerByName(name) {
-  const players = loadPlayers();
+async function findPlayerByName(name) {
+  const players = await loadPlayers();
   const searchName = name.toLowerCase();
 
   return Object.values(players).find((player) =>
@@ -145,40 +129,26 @@ function findPlayerByName(name) {
 /**
  * Récupère les statistiques générales de la base de données
  */
-function getDatabaseStats() {
-  const players = Object.values(loadPlayers());
+async function getDatabaseStats() {
+  const players = Object.values(await loadPlayers());
 
   if (players.length === 0) {
-    return {
-      totalPlayers: 0,
-      averageLevel: 0,
-      totalGold: 0,
-      activePlayers: 0,
-    };
+    return { totalPlayers: 0, averageLevel: 0, totalGold: 0, activePlayers: 0 };
   }
 
   const totalLevel = players.reduce((sum, player) => sum + player.level, 0);
   const totalGold = players.reduce((sum, player) => sum + player.gold, 0);
 
-  // Joueurs actifs dans les dernières 24 heures
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  const activePlayers = players.filter(
-    (player) => new Date(player.lastActive) > yesterday,
-  ).length;
+  const activePlayers = players.filter((player) => new Date(player.lastActive) > yesterday).length;
 
-  // Statistiques par classe
   const classCounts = {};
-  players.forEach((player) => {
-    classCounts[player.class] = (classCounts[player.class] || 0) + 1;
-  });
+  players.forEach((player) => { classCounts[player.class] = (classCounts[player.class] || 0) + 1; });
 
-  // Statistiques par faction
   const factionCounts = {};
   players.forEach((player) => {
-    if (player.faction) {
-      factionCounts[player.faction] = (factionCounts[player.faction] || 0) + 1;
-    }
+    if (player.faction) factionCounts[player.faction] = (factionCounts[player.faction] || 0) + 1;
   });
 
   return {
@@ -193,228 +163,7 @@ function getDatabaseStats() {
   };
 }
 
-/**
- * Nettoie les joueurs inactifs (non utilisé depuis X jours)
- */
-function cleanupInactivePlayers(daysInactive = 30) {
-  const players = loadPlayers();
-  const cutoffDate = new Date();
-  cutoffDate.setDate(cutoffDate.getDate() - daysInactive);
-
-  let deletedCount = 0;
-
-  for (const [userId, player] of Object.entries(players)) {
-    const lastActive = new Date(player.lastActive);
-    if (lastActive < cutoffDate) {
-      delete players[userId];
-      deletedCount++;
-    }
-  }
-
-  if (deletedCount > 0) {
-    savePlayersData(players);
-    console.log(
-      `Nettoyage terminé: ${deletedCount} joueurs inactifs supprimés`,
-    );
-  }
-
-  return deletedCount;
-}
-
-/**
- * Exporte les données des joueurs pour sauvegarde
- */
-function exportPlayerData() {
-  const players = loadPlayers();
-  const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-  const exportPath = path.join(
-    __dirname,
-    `../database/backup_players_${timestamp}.json`,
-  );
-
-  try {
-    fs.writeFileSync(exportPath, JSON.stringify(players, null, 2));
-    console.log(`Données exportées vers: ${exportPath}`);
-    return exportPath;
-  } catch (error) {
-    console.error("Erreur lors de l'export:", error);
-    return null;
-  }
-}
-
-/**
- * Importe les données des joueurs depuis un fichier de sauvegarde
- */
-function importPlayerData(filePath) {
-  try {
-    if (!fs.existsSync(filePath)) {
-      throw new Error("Fichier de sauvegarde introuvable");
-    }
-
-    const data = fs.readFileSync(filePath, "utf8");
-    const players = JSON.parse(data);
-
-    // Valider la structure des données
-    if (typeof players !== "object") {
-      throw new Error("Format de données invalide");
-    }
-
-    savePlayersData(players);
-    console.log(`Données importées depuis: ${filePath}`);
-    return Object.keys(players).length;
-  } catch (error) {
-    console.error("Erreur lors de l'import:", error);
-    return -1;
-  }
-}
-
-/**
- * Corrige l'expérience des joueurs pour respecter la formule linéaire
- */
-function fixPlayerExperience() {
-  const players = loadPlayers();
-  let fixedCount = 0;
-
-  for (const [userId, player] of Object.entries(players)) {
-    if (player.experience >= 0) {
-      // Calculer le niveau correct basé sur l'expérience totale
-      // Le système fonctionne comme suit :
-      // - Niveau 1 nécessite 100 XP pour passer au niveau 2
-      // - Niveau 2 nécessite 200 XP pour passer au niveau 3
-      // - Niveau 3 nécessite 300 XP pour passer au niveau 4, etc.
-
-      let totalExpUsed = 0;
-      let currentLevel = 1;
-      let totalExpAvailable = player.experience;
-
-      // Calculer le niveau en additionnant l'XP nécessaire pour chaque niveau
-      while (totalExpUsed + currentLevel * 100 <= totalExpAvailable) {
-        totalExpUsed += currentLevel * 100;
-        currentLevel++;
-      }
-
-      const remainingExp = totalExpAvailable - totalExpUsed;
-
-      // Vérifier si une correction est nécessaire
-      if (currentLevel !== player.level || remainingExp !== player.experience) {
-        console.log(
-          `Correction du joueur ${player.name}: Niveau ${player.level} -> ${currentLevel}, XP ${player.experience} -> ${remainingExp} (XP total: ${totalExpAvailable})`,
-        );
-
-        // Ajuster les stats si le niveau a augmenté
-        const oldLevel = player.level;
-        if (currentLevel > oldLevel) {
-          const levelDiff = currentLevel - oldLevel;
-          player.maxHealth += levelDiff * 10;
-          player.maxMana += levelDiff * 5;
-          player.stats.attack += levelDiff;
-          player.stats.defense += levelDiff;
-          player.stats.magicAttack += levelDiff;
-          player.stats.magicDefense += levelDiff;
-        }
-
-        player.level = currentLevel;
-        player.experience = remainingExp;
-        fixedCount++;
-      }
-    }
-  }
-
-  if (fixedCount > 0) {
-    savePlayersData(players);
-    console.log(`${fixedCount} joueurs corrigés pour l'expérience`);
-  }
-
-  return fixedCount;
-}
-
-/**
- * Réinitialise complètement la base de données
- */
-function resetDatabase() {
-  try {
-    savePlayersData({});
-    console.log("Base de données réinitialisée");
-    return true;
-  } catch (error) {
-    console.error("Erreur lors de la réinitialisation:", error);
-    return false;
-  }
-}
-
-/**
- * Migre les anciennes données de quêtes vers la nouvelle structure
- * Corrige les joueurs avec des quêtes actives invalides du ancien système
- */
-function migrateQuestData() {
-  const players = loadPlayers();
-  let migratedCount = 0;
-  let abandonedCount = 0;
-
-  for (const [userId, player] of Object.entries(players)) {
-    // Vérifier si le joueur a une quête active
-    if (player.quests && player.quests.active) {
-      const quest = player.quests.active;
-
-      // Vérifier si c'est une ancienne quête sans les champs requis
-      // Une quête valide doit avoir un startTime
-      if (!quest.startTime) {
-        console.log(
-          `⚠️ Quête ancienne structure détectée pour ${player.name}: abandonnée automatiquement`,
-        );
-        player.quests.active = null;
-        abandonedCount++;
-        continue;
-      }
-
-      // Vérifier si startTime est valide
-      try {
-        const startTime = new Date(quest.startTime);
-        if (isNaN(startTime.getTime())) {
-          console.log(
-            `⚠️ Quête avec startTime invalide pour ${player.name}: abandonnée automatiquement`,
-          );
-          player.quests.active = null;
-          abandonedCount++;
-          continue;
-        }
-      } catch (e) {
-        console.log(
-          `⚠️ Erreur lors de la validation du startTime pour ${player.name}: quête abandonnée`,
-        );
-        player.quests.active = null;
-        abandonedCount++;
-        continue;
-      }
-
-      // Ajouter le champ progress s'il manque
-      if (!quest.hasOwnProperty("progress")) {
-        quest.progress = 0;
-        migratedCount++;
-      }
-    }
-
-    // S'assurer que la structure des quêtes est correcte
-    if (!player.quests) {
-      player.quests = {
-        active: null,
-        completed: [],
-        completedToday: 0,
-        lastQuestTime: null,
-      };
-    }
-  }
-
-  if (migratedCount > 0 || abandonedCount > 0) {
-    savePlayersData(players);
-    console.log(
-      `✅ Migration des quêtes terminée: ${migratedCount} quêtes migrées, ${abandonedCount} quêtes abandonnées`,
-    );
-  }
-
-  return { migratedCount, abandonedCount };
-}
-
+// Export des fonctions pour le reste de votre application Express
 module.exports = {
   loadPlayers,
   savePlayersData,
@@ -425,11 +174,5 @@ module.exports = {
   getPlayersByFaction,
   getPlayersByClass,
   findPlayerByName,
-  getDatabaseStats,
-  cleanupInactivePlayers,
-  exportPlayerData,
-  importPlayerData,
-  fixPlayerExperience,
-  migrateQuestData,
-  resetDatabase,
+  getDatabaseStats
 };
