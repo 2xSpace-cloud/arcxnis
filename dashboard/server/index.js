@@ -298,6 +298,9 @@ app.post('/auth/request-code', async (req, res) => {
   }
 });
 
+// Force Mongoose à abandonner si MongoDB met plus de 5 secondes à répondre
+mongoose.set('bufferCommands', false); 
+ 
 app.post('/auth/verify-code', async (req, res) => {
   try {
     const { discordId, code } = req.body || {};
