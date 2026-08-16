@@ -220,9 +220,11 @@ app.post('/auth/request-code', async (req, res) => {
 });
 
 // 6. Redirection universelle vers l'application React (À laisser tout en bas des routes)
-app.get('*', (req, res) => {
-    res.sendFile(path.join(clientBuildPath, 'index.html'));
+app.get("/profil/:id", async (req, res) => {
+  const player = await getPlayer(req.params.id); // Ajout de async/await
+  res.json(player);
 });
+
 
 // 7. Démarrage du serveur Express
 app.listen(PORT, () => {
