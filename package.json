@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-  "scripts": {
-  "start": "node dashboard/server/index.js & node MedievalKingdom/MedievalKingdom/index.js",
-  "build": "vite build" 
-},
-
+    "start": "node dashboard/server/index.js & node MedievalKingdom/MedievalKingdom/index.js",
+    "build": "vite build"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
