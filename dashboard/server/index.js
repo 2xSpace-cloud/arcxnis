@@ -12,6 +12,17 @@ const mongoose = require('mongoose');
 if (mongoose.connection.readyState === 0) {
   mongoose.connect(process.env.MONGO_URI).catch(err => console.error('Erreur de connexion initiale Mongoose:', err));
 }
+// Force Mongoose à afficher toutes les requêtes de base de données dans la console Render
+mongoose.set('debug', true); 
+
+// Écoute les erreurs de connexion à chaud
+mongoose.connection.on('error', err => {
+  console.error('❌ ERREUR DIRECTE MONGODB :', err);
+});
+
+mongoose.connection.on('connected', () => {
+  console.log('✅ Mongoose est bien connecté à la base de données !');
+});
 
 const app = express();
 app.set('trust proxy', 1);
