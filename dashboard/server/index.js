@@ -13,7 +13,7 @@ const app = express();
 // 2. Définition du port réseau (Render utilise process.env.PORT)
 const PORT = process.env.PORT || process.env.DASHBOARD_PORT || 5000;
 
-// 3. Middlewares globaux (Toujours déclarer AVANT les routes)
+// 3. Middlewares globaux
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(session({
@@ -23,14 +23,12 @@ app.use(session({
   cookie: { secure: false, maxAge: 7 * 24 * 60 * 60 * 1000 }
 }));
 
-// 4. Configuration des fichiers statiques compilés par React (Dossier 'dist' dans client)
+// 4. Configuration des fichiers statiques compilés par React
 const clientBuildPath = path.join(__dirname, '../client/dist'); 
 app.use(express.static(clientBuildPath));
 
-// 5. CONFIGURATION DES CHEMINS DE LA BASE DE DONNÉES
+// 5. configuration des données de jeu et base de données
 const { classes, factions, monsters } = require('../../MedievalKingdom/MedievalKingdom/systems/gameData.js');
-
-// CORRECTIF: Importation directe de vos fonctions MongoDB Atlas asynchrones
 const { getPlayer, loadPlayers } = require('../../MedievalKingdom/MedievalKingdom/utils/database.js');
 
 const BOT_TOKEN     = process.env.DISCORD_TOKEN || '';
@@ -63,7 +61,7 @@ function verifyCode(discordId, inputCode) {
   entry.attempts++;
   if (entry.attempts > MAX_ATTEMPTS) {
     otpStore.delete(discordId);
-    return { ok: false, error: 'Trop de tentatives. Demandez un nouveau code.' };
+    return { ok: false, error: 'Trop de tentative(s). Demandez un nouveau code.' };
   }
   if (entry.code !== inputCode.trim()) {
     return { ok: false, error: `Code incorrect. ${MAX_ATTEMPTS - entry.attempts} tentative(s) restante(s).` };
@@ -72,7 +70,7 @@ function verifyCode(discordId, inputCode) {
   return { ok: true };
 }
 
-// Cleanup expired codes every 10 minutes
+// Cleanup expiations
 setInterval(() => {
   const now = Date.now();
   for (const [id, entry] of otpStore.entries()) {
@@ -118,41 +116,14 @@ async function isGuildMember(userId) {
   } catch { return false; }
 }
 
-async function getGuildMember(userId) {
-  if (!BOT_TOKEN || !GUILD_ID) return null;
-  try {
-    const res = await discordRequest('GET', `/guilds/${GUILD_ID}/members/${userId}`);
-    return res.status === 200 ? res.body : null;
-  } catch { return null; }
-}
-
 async function sendDM(userId, message) {
   const dmRes = await discordRequest('POST', '/users/@me/channels', { recipient_id: userId });
-  if (dmRes.status !== 200) throw new Error(`Impossible d'ouvrir le DM (status ${dmRes.status})`);
+  if (dmRes.status !== 200) throw new Error(`Impossible d'ouvrir le DM`);
   const channelId = dmRes.body.id;
 
   const msgRes = await discordRequest('POST', `/channels/${channelId}/messages`, { content: message });
-  if (msgRes.status !== 200) throw new Error(`Impossible d'envoyer le message (status ${msgRes.status})`);
+  if (msgRes.status !== 200) throw new Error(`Impossible d'envoyer le message`);
   return true;
-}
-
-function buildAvatarUrl(userId, avatarHash, size = 128) {
-  if (!avatarHash) return null;
-  const ext = avatarHash.startsWith('a_') ? 'gif' : 'png';
-  return `https://discordapp.com{userId}/${avatarHash}.${ext}?size=${size}`;
-}
-
-function buildMemberAvatarUrl(guildId, userId, avatarHash, size = 128) {
-  if (!avatarHash) return null;
-  const ext = avatarHash.startsWith('a_') ? 'gif' : 'png';
-  return `https://discordapp.com{guildId}/users/${userId}/avatars/${avatarHash}.${ext}?size=${size}`;
-}
-
-function defaultAvatarUrl(userId) {
-  try {
-    const index = (BigInt(userId) >> 22n) % 6n;
-    return `https://discordapp.com{index}.png`;
-  } catch { return 'https://discordapp.com'; }
 }
 
 function requireAuth(req, res, next) {
@@ -162,54 +133,73 @@ function requireAuth(req, res, next) {
 
 // ─── Auth routes ──────────────────────────────────────────────────────────────
 
+// 1. Demande de code
 app.post('/auth/request-code', async (req, res) => {
   const { discordId } = req.body;
-
   if (!discordId || !/^\d{15,20}$/.test(discordId.trim())) {
-    return res.status(400).json({ error: 'ID Discord invalide. Il doit contenir uniquement des chiffres (15-20 caractères).' });
+    return res.status(400).json({ error: 'ID Discord invalide.' });
   }
 
   const id = discordId.trim();
-
-  const existing = otpStore.get(id);
-  if (existing && Date.now() < existing.expiresAt - (OTP_EXPIRY_MS - 10000)) {
-    const remaining = Math.ceil((existing.expiresAt - Date.now()) / 1000);
-    return res.status(429).json({ error: `Un code a déjà été envoyé. Attendez ${remaining}s ou vérifiez vos DMs.` });
-  }
-
   const isMember = await isGuildMember(id);
   if (!isMember) {
-    return res.status(403).json({ error: 'Cet ID Discord n\'est pas membre du serveur Medieval Kingdom.' });
+    return res.status(403).json({ error: 'Cet ID Discord n\'est pas membre du serveur.' });
   }
 
-  // CORRECTIF: Interrogation asynchrone directe de MongoDB pour vérifier le joueur
   const targetPlayer = await getPlayer(id);
   if (!targetPlayer) {
-    return res.status(404).json({ error: 'Aucun personnage trouvé pour cet ID. Créez-en un avec le bot Discord d\'abord.' });
+    return res.status(404).json({ error: 'Aucun personnage trouvé pour cet ID.' });
   }
 
   const code = generateCode();
   try {
     await sendDM(id, [
-      `🏰 **Arcxnis — Connexion au tableau de bord**`,
-      ``,
-      `Votre code de connexion est :`,
-      `## \`${code}\``,
-      ``,
-      `⏱️ Ce code expire dans **5 minutes** et n'est valable qu'une seule fois.`,
-      `🚫 Si vous n'avez pas demandé ce code, ignorez ce message.`
+      `🏰 **Medieval Kingdom — Connexion au tableau de bord**`,
+      `Votre code de connexion est : ## \`${code}\``,
+      `⏱️ Expire dans 5 minutes.`
     ].join('\n'));
   } catch (err) {
-    console.error('DM error:', err.message);
-    return res.status(500).json({ error: 'Impossible d\'envoyer le DM. Vérifiez que vos messages privés sont ouverts.' });
+    return res.status(500).json({ error: 'Impossible d\'envoyer le DM.' });
   }
 
   storeCode(id, code);
-  console.log(`Code envoyé à ${id} (joueur: ${targetPlayer.name})`);
   res.json({ success: true });
 });
 
-// 6. Redirection universelle vers l'application React
+// 2. CORRECTIF AJOUTÉ : Route de vérification du code (Indispensable pour l'étape "Se Connecter")
+app.post('/auth/verify-code', async (req, res) => {
+  const { discordId, code } = req.body;
+
+  if (!discordId || !code) {
+    return res.status(400).json({ error: 'Identifiant ou code manquant.' });
+  }
+
+  const id = discordId.trim();
+  const result = verifyCode(id, code);
+
+  if (!result.ok) {
+    return res.status(400).json({ error: result.error });
+  }
+
+  // Récupérer le joueur pour injecter la session utilisateur
+  const player = await getPlayer(id);
+  req.session.user = {
+    id: player.id,
+    name: player.name,
+    class: player.class
+  };
+
+  res.json({ success: true, user: req.session.user });
+});
+
+// 3. Déconnexion
+app.post('/auth/logout', (req, res) => {
+  req.session.destroy();
+  res.json({ success: true });
+});
+
+// ─── API endpoints protégés ───────────────────────────────────────────────────
+
 app.get("/profil/:id", async (req, res) => {
   const player = await getPlayer(req.params.id); 
   res.json(player);
