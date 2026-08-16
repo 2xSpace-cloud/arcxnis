@@ -252,6 +252,7 @@ module.exports = {
     const targetUser = interaction.options.getUser("joueur") || interaction.user;
     
     // FIX: Ajout de await pour charger le profil depuis MongoDB
+    // ... (Copiez ce bloc uniquement si votre fichier s'est arrêté à "targetUser")
     const player = await getPlayer(targetUser.id);
     
     if (!player) {
@@ -282,7 +283,6 @@ module.exports = {
     const userId = interaction.user.id;
     const nouvelleClasse = interaction.options.getString("nouvelle_classe");
     
-    // FIX: Ajout de await
     const player = await getPlayer(userId);
     if (!player) {
       return await interaction.reply({
@@ -302,6 +302,10 @@ module.exports = {
     player.class = nouvelleClasse;
     player.stats = { ...classes[nouvelleClasse].baseStats };
     
-    // FIX: Ajout de await
     await updatePlayer(userId, player);
 
+    await interaction.reply({
+      embeds: [createEmbed("success", `🔮 Vous avez changé de classe pour devenir **${classes[nouvelleClasse].name}** ! (100 🪙 retirés)`)],
+    });
+  }
+};
