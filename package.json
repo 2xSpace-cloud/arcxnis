@@ -2,10 +2,11 @@
   "name": "workspace",
   "version": "1.0.0",
   "main": "index.js",
-    "scripts": {
+   "scripts": {
     "start": "node dashboard/server/index.js & node MedievalKingdom/MedievalKingdom/index.js",
     "build": "cd dashboard/server && npm install && cd ../client && npm install && npm run build && cd ../../MedievalKingdom/MedievalKingdom && npm install"
   },
+
   "keywords": [],
   "author": "",
   "license": "ISC",
