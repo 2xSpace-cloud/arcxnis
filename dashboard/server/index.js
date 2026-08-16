@@ -23,8 +23,8 @@ app.use(session({
   cookie: { secure: false, maxAge: 7 * 24 * 60 * 60 * 1000 }
 }));
 
-// 4. Configuration des fichiers statiques compilés par React (Dossier 'dist')
-const clientBuildPath = path.join(process.cwd(), 'dashboard', 'dist'); 
+// 4. Configuration des fichiers statiques compilés par React (Dossier 'dist' dans client)
+const clientBuildPath = path.join(__dirname, '../client/dist'); 
 app.use(express.static(clientBuildPath));
 
 // 5. CONFIGURATION DES CHEMINS DE LA BASE DE DONNÉES
@@ -141,20 +141,20 @@ async function sendDM(userId, message) {
 function buildAvatarUrl(userId, avatarHash, size = 128) {
   if (!avatarHash) return null;
   const ext = avatarHash.startsWith('a_') ? 'gif' : 'png';
-  return `https://cdn.discordapp.com/avatars/${userId}/${avatarHash}.${ext}?size=${size}`;
+  return `https://discordapp.com{userId}/${avatarHash}.${ext}?size=${size}`;
 }
 
 function buildMemberAvatarUrl(guildId, userId, avatarHash, size = 128) {
   if (!avatarHash) return null;
   const ext = avatarHash.startsWith('a_') ? 'gif' : 'png';
-  return `https://cdn.discordapp.com/guilds/${guildId}/users/${userId}/avatars/${avatarHash}.${ext}?size=${size}`;
+  return `https://discordapp.com{guildId}/users/${userId}/avatars/${avatarHash}.${ext}?size=${size}`;
 }
 
 function defaultAvatarUrl(userId) {
   try {
     const index = (BigInt(userId) >> 22n) % 6n;
-    return `https://cdn.discordapp.com/embed/avatars/${index}.png`;
-  } catch { return 'https://cdn.discordapp.com/embed/avatars/0.png'; }
+    return `https://discordapp.com{index}.png`;
+  } catch { return 'https://discordapp.com'; }
 }
 
 function loadJSON(filePath) {
