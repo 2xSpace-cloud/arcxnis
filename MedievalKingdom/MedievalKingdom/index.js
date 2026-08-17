@@ -3,7 +3,11 @@ const fs = require("fs");
 const path = require("path");
 
 // Charger les variables d'environnement au démarrage
-require("dotenv").config();
+// Remplacez : require("dotenv").config();
+// Par cette ligne sécurisée (vers la ligne 6 de votre fichier de bot) :
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, "config.js") }); 
+
 
 const config = require("./config.js");
 
