@@ -2,24 +2,12 @@
   "name": "medieval-kingdom-root",
   "version": "1.0.0",
   "description": "Monorepo racine pour Medieval Kingdom",
+  "main": "dashboard/server/index.js",
   "scripts": {
     "install-all": "npm install && cd dashboard/server && npm install",
     "start": "node dashboard/server/index.js"
-  }
-}
-
-
-
+  },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "express-session": "^1.19.0",
-    "passport": "^0.7.0",
-    "passport-discord": "^0.1.4"
-  }
+  "license": "ISC"
 }
