@@ -302,3 +302,9 @@ setInterval(() => {
 app.listen(PORT, () => {
   console.log(`🚀 Le serveur du Dashboard écoute sur le port ${PORT}`);
 });
+
+// Libère proprement les ports en cas de signal de fermeture de Render
+process.on('SIGTERM', () => {
+  console.log('⚠️ Signal SIGTERM reçu. Fermeture propre du serveur...');
+  process.exit(0);
+});
