@@ -10,11 +10,10 @@ require('dotenv').config({ path: path.join(__dirname, '../../MedievalKingdom/Med
 
 const mongoose = require('mongoose');
 
-// 1. Désactive la mise en attente infinie des requêtes si la connexion rame
-mongoose.set('bufferCommands', true);
+// CORRECTION : On refuse de bloquer les requêtes indéfiniment si MongoDB rame
+mongoose.set('bufferCommands', false);
 
-
-// 2. Optionnel : Active les logs pour voir les requêtes Mongoose en direct dans Render
+// Active les logs pour voir les requêtes Mongoose en direct dans Render
 mongoose.set('debug', true);
 
 if (mongoose.connection.readyState === 0) {
@@ -28,9 +27,6 @@ if (mongoose.connection.readyState === 0) {
     console.error('❌ ERREUR CRITIQUE DE CONNEXION MONGOOSE:', err);
   });
 }
-
-// Force Mongoose à afficher toutes les requêtes de base de données dans la console Render
-mongoose.set('debug', true); 
 
 // Écoute les erreurs de connexion à chaud
 mongoose.connection.on('error', err => {
@@ -207,164 +203,17 @@ function verifyCodeEntry(discordId, inputCode) {
   return { ok: true };
 }
 
+// CORRECTION : Boucle de nettoyage complétée proprement
 setInterval(() => {
   const now = Date.now();
   for (const [id, entry] of otpStore.entries()) {
-    if (now > entry.expiresAt) otpStore.delete(id);
-  }
-}, 10 * 60 * 1000);
-
-// ─── Discord REST helpers ─────────────────────────────────────────────────────
-
-function discordRequest(method, endpoint, body = null, timeoutMs = 10000) {
-  return new Promise((resolve, reject) => {
-    const payload = body ? JSON.stringify(body) : null;
-    const options = {
-      hostname: 'discord.com',
-      path: `/api/v10${endpoint}`,
-      method,
-      headers: {
-        Authorization: `Bot ${BOT_TOKEN}`,
-        'Content-Type': 'application/json',
-        'User-Agent': 'MedievalKingdomDashboard/1.0',
-        ...(payload ? { 'Content-Length': Buffer.byteLength(payload) } : {})
-      }
-    };
-    const req = https.request(options, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        try { resolve({ status: res.statusCode, body: data ? JSON.parse(data) : null }); }
-        catch (e) { resolve({ status: res.statusCode, body: null }); }
-      });
-    });
-    req.on('error', reject);
-    req.setTimeout(timeoutMs, () => {
-      req.destroy(new Error('Discord request timeout'));
-    });
-    if (payload) req.write(payload);
-    req.end();
-  });
-}
-
-async function isGuildMember(userId) {
-  if (!BOT_TOKEN || !GUILD_ID) return false;
-  try {
-    const res = await discordRequest('GET', `/guilds/${GUILD_ID}/members/${userId}`);
-    return res.status === 200;
-  } catch (err) {
-    console.error('isGuildMember error', err);
-    return false;
-  }
-}
-
-async function sendDM(userId, message) {
-  // create DM channel
-  const dmRes = await discordRequest('POST', '/users/@me/channels', { recipient_id: userId });
-  if (!(dmRes.status === 200 || dmRes.status === 201) || !dmRes.body || !dmRes.body.id) {
-    throw new Error('Impossible d\'ouvrir le DM');
-  }
-  const channelId = dmRes.body.id;
-
-  const msgRes = await discordRequest('POST', `/channels/${channelId}/messages`, { content: message });
-  if (!(msgRes.status === 200 || msgRes.status === 201)) throw new Error('Impossible d\'envoyer le message');
-  return true;
-}
-
-function requireAuth(req, res, next) {
-  if (req.session && req.session.user) return next();
-  return res.status(401).json({ error: 'Non authentifié' });
-}
-
-// ─── Auth routes ─────────────────────────────────────────────────────────────
-
-app.post('/auth/request-code', async (req, res) => {
-  try {
-    const { discordId } = req.body || {};
-    if (!discordId || !/^\d{15,20}$/.test(String(discordId).trim())) {
-      return res.status(400).json({ error: 'ID Discord invalide.' });
-    }
-
-    const id = String(discordId).trim();
-    const isMember = await isGuildMember(id);
-    if (!isMember) {
-      return res.status(403).json({ error: "Cet ID Discord n'est pas membre du serveur." });
-    }
-
-    const targetPlayer = await getPlayer(id);
-    if (!targetPlayer) {
-      return res.status(404).json({ error: 'Aucun personnage trouvé pour cet ID.' });
-    }
-
-    const code = generateCode();
-    storeCode(id, code);
-
-    // Envoi du code en DM
-    try {
-      await sendDM(id, `Votre code de connexion Medieval Kingdom : ${code} (valable ${Math.floor(OTP_EXPIRY_MS / 60000)} min)`);
-      return res.json({ ok: true, message: 'Code envoyé' });
-    } catch (err) {
-      console.error('sendDM error', err);
-      // supprimer le code si on n'a pas pu envoyer le DM
+    if (now > entry.expiresAt) {
       otpStore.delete(id);
-      return res.status(500).json({ error: "Impossible d'envoyer le DM. Vérifiez le bot ou l'ID." });
     }
-  } catch (err) {
-    console.error('/auth/request-code', err);
-    return res.status(500).json({ error: 'Erreur interne' });
   }
-});
+}, 60000);
 
-// Force Mongoose à abandonner si MongoDB met plus de 5 secondes à répondre
-mongoose.set('bufferCommands', false); 
- 
-app.post('/auth/verify-code', async (req, res) => {
-  try {
-    const { discordId, code } = req.body || {};
-    if (!discordId || !code) return res.status(400).json({ error: 'Paramètres manquants.' });
-
-    console.log(`[DEBUG AUTH] Étape 1 : Entrée dans verifyCodeEntry pour ID ${discordId} et Code ${code}`);
-
-    // On exécute la vérification
-   const codeFormate = String(code).trim().padStart(6, '0');
-   const result = verifyCodeEntry(String(discordId).trim(), codeFormate);
-
-    
-    console.log("[DEBUG AUTH] Étape 2 : verifyCodeEntry a répondu !", result);
-
-    if (!result || !result.ok) return res.status(400).json({ error: result?.error || 'Code invalide.' });
-
-    console.log(`[DEBUG AUTH] Étape 3 : Appel de getPlayer...`);
-    const player = await getPlayer(String(discordId).trim());
-    
-    console.log("[DEBUG AUTH] Étape 4 : getPlayer a répondu !");
-    if (!player) return res.status(404).json({ error: 'Aucun personnage trouvé pour cet ID.' });
-
-    req.session.user = { discordId: String(discordId).trim(), playerId: player._id };
-    return res.json({ ok: true });
-
-  } catch (err) {
-    console.error('❌ [AUTH] Erreur critique :', err);
-    return res.status(500).json({ error: 'Erreur interne' });
-  }
-});
-
-
-
-// Exemple de route protégée
-app.get('/profil/:discordId', requireAuth, async (req, res) => {
-  const { discordId } = req.params;
-  try {
-    const player = await getPlayer(discordId);
-    if (!player) return res.status(404).send('Profil introuvable');
-    return res.json({ player });
-  } catch (err) {
-    console.error('/profil', err);
-    return res.status(500).send('Erreur interne');
-  }
-});
-
-// Démarrage du serveur
+// AJOUT : Démarrage indispensable du serveur Express
 app.listen(PORT, () => {
-  console.log(`Dashboard server listening on port ${PORT}`);
+  console.log(`🚀 Le serveur du Dashboard écoute sur le port ${PORT}`);
 });
