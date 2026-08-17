@@ -171,9 +171,6 @@ if (fs.existsSync(clientBuildPath) && fs.existsSync(path.join(clientBuildPath, '
 const { classes, factions, monsters } = require('../../MedievalKingdom/MedievalKingdom/systems/gameData.js');
 const { getPlayer, loadPlayers, getAllPlayers, getDatabaseStats } = require('../../MedievalKingdom/MedievalKingdom/utils/database.js');
 
-const BOT_TOKEN = process.env.DISCORD_TOKEN || '';
-const GUILD_ID = process.env.GUILD_ID || '';
-
 // ─── OTP store: { discordId -> { code, expiresAt, attempts } } ───────────────
 const otpStore = new Map();
 const OTP_EXPIRY_MS = 5 * 60 * 1000;
