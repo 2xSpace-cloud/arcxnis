@@ -1,9 +1,11 @@
 {
-  "name": "workspace",
+  "name": "medieval-kingdom-root",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Monorepo racine pour Medieval Kingdom",
   "scripts": {
-  "start": "node dashboard/server/index.js"
+    "install-all": "npm install && cd dashboard/server && npm install",
+    "start": "node dashboard/server/index.js"
+  }
 }
 
 
