@@ -203,6 +203,87 @@ function verifyCodeEntry(discordId, inputCode) {
   return { ok: true };
 }
 
+
+// =========================================================================
+// 🔓 ROUTES D'AUTHENTIFICATION OTP (À AJOUTER)
+// =========================================================================
+
+/**
+ * Route 1 : Demande de génération et d'envoi du code OTP
+ */
+app.post('/auth/request-code', async (req, res) => {
+  try {
+    const { discordId } = req.body;
+    
+    if (!discordId) {
+      return res.status(400).json({ error: "L'identifiant Discord est obligatoire." });
+    }
+
+    // 1. Vérification si le joueur existe dans votre base de données MongoDB
+    const playerExists = await getPlayer(discordId);
+    if (!playerExists) {
+      return res.status(404).json({ error: "Ce compte Discord n'est pas enregistré dans le jeu Medieval Kingdom." });
+    }
+
+    // 2. Génération du code à 6 chiffres
+    const code = generateCode();
+    storeCode(discordId, code);
+    
+    console.log(`[OTP] Code généré pour ${discordId} : ${code}`);
+
+    // NOTIFICATION IMPORTANTE : 
+    // Ici, vous devrez intégrer l'envoi du message privé via votre bot Discord !
+    // Exemple temporaire : simulation de succès ou log console.
+    
+    return res.json({ success: true, message: "Code généré avec succès." });
+
+  } catch (error) {
+    console.error("Erreur dans /auth/request-code :", error);
+    return res.status(500).json({ error: "Une erreur interne est survenue sur le serveur." });
+  }
+});
+
+/**
+ * Route 2 : Vérification du code saisi par l'utilisateur
+ */
+app.post('/auth/verify-code', async (req, res) => {
+  try {
+    const { discordId, code } = req.body;
+
+    if (!discordId || !code) {
+      return res.status(400).json({ error: "L'ID Discord et le code sont obligatoires." });
+    }
+
+    // Validation du jeton OTP
+    const verification = verifyCodeEntry(discordId, code);
+    
+    if (!verification.ok) {
+      return res.status(400).json({ error: verification.error });
+    }
+
+    // Connexion réussie : Initialisation de la session utilisateur
+    req.session.userId = discordId;
+    
+    return res.json({ success: true, redirectUrl: `/profil/${discordId}` });
+
+  } catch (error) {
+    console.error("Erreur dans /auth/verify-code :", error);
+    return res.status(500).json({ error: "Une erreur interne est survenue." });
+  }
+});
+
+/**
+ * Route Optionnelle : Vérification de session (/api/me)
+ * Évite les erreurs sur le front-end lors du chargement initial
+ */
+app.get('/api/me', (req, res) => {
+  if (req.session && req.session.userId) {
+    return res.json({ loggedIn: true, userId: req.session.userId });
+  }
+  return res.status(401).json({ loggedIn: false, error: "Non authentifié" });
+});
+
+
 // CORRECTION : Boucle de nettoyage complétée proprement
 setInterval(() => {
   const now = Date.now();
