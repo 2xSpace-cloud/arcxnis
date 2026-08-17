@@ -326,7 +326,7 @@ app.post('/auth/verify-code', async (req, res) => {
 
     // On exécute la vérification
    const codeFormate = String(code).trim().padStart(6, '0');
-const result = verifyCodeEntry(String(discordId).trim(), codeFormate);
+   const result = verifyCodeEntry(String(discordId).trim(), codeFormate);
 
     
     console.log("[DEBUG AUTH] Étape 2 : verifyCodeEntry a répondu !", result);
