@@ -62,6 +62,13 @@ app.use(session({
 
 // 4. CONFIGURATION SÉCURISÉE DU FRONT-END
 const clientBuildPath = path.join(__dirname, '../client/dist');
+// Dans dashboard/server/index.js (Ligne ~65)
+const BOT_TOKEN = process.env.DISCORD_TOKEN || '';
+const GUILD_ID = process.env.GUILD_ID || '';
+
+// CORRECTION : On importe le client existant déjà connecté du dossier MedievalKingdom
+const { client } = require('../../MedievalKingdom/MedievalKingdom/index.js'); 
+// (Ajustez le nom du fichier s'il s'appelle bot.js ou main.js)
 
 // On n'active l'envoi des fichiers statiques que si le dossier compilé existe réellement
 if (fs.existsSync(clientBuildPath) && fs.existsSync(path.join(clientBuildPath, 'index.html'))) {
