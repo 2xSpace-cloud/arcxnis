@@ -1,13 +1,9 @@
 const { Client, GatewayIntentBits, Collection } = require("discord.js");
 const fs = require("fs");
-const path = require("path");
+const path = require("path"); // Déclaré UNE SEULE fois ici
 
-// Charger les variables d'environnement au démarrage
-// Remplacez : require("dotenv").config();
-// Par cette ligne sécurisée (vers la ligne 6 de votre fichier de bot) :
-const path = require("path");
-require("dotenv").config({ path: path.join(__dirname, "config.js") }); 
-
+// Charger proprement le fichier .env en utilisant la variable path déjà existante
+require("dotenv").config({ path: path.join(__dirname, ".env") });
 
 const config = require("./config.js");
 
@@ -18,7 +14,7 @@ const client = new Client({
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.GuildVoiceStates, // Ajout pour le vocal
+    GatewayIntentBits.GuildVoiceStates,
   ],
 });
 
