@@ -11,7 +11,8 @@ require('dotenv').config({ path: path.join(__dirname, '../../MedievalKingdom/Med
 const mongoose = require('mongoose');
 
 // 1. Désactive la mise en attente infinie des requêtes si la connexion rame
-mongoose.set('bufferCommands', false);
+mongoose.set('bufferCommands', true);
+
 
 // 2. Optionnel : Active les logs pour voir les requêtes Mongoose en direct dans Render
 mongoose.set('debug', true);
