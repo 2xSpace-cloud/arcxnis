@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node dashboard/server/index.js & node MedievalKingdom/MedievalKingdom/index.js",
-    "build": "echo 'Build externe'"
-  },
+  "start": "node dashboard/server/index.js"
+}
+
 
 
   "keywords": [],
