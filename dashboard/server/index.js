@@ -270,11 +270,25 @@ app.post('/auth/verify-code', async (req, res) => {
   }
 });
 
-app.get('/api/me', (req, res) => {
-  if (req.session && req.session.userId) {
-    return res.json({ loggedIn: true, userId: req.session.userId });
+app.get('/api/me', async (req, res) => {
+  try {
+    if (!req.session || !req.session.userId) {
+      return res.status(401).json({ loggedIn: false, error: "Non connecté" });
+    }
+    
+    // On va chercher les vraies données du joueur dans MongoDB Atlas
+    const playerData = await getPlayer(req.session.userId);
+    
+    // On renvoie un objet complet avec l'ID ET les données du jeu
+    return res.json({ 
+      loggedIn: true, 
+      userId: req.session.userId,
+      player: playerData || {} // Évite que React plante si l'objet est absent
+    });
+  } catch (error) {
+    console.error("Erreur route /api/me :", error);
+    return res.status(500).json({ error: "Erreur serveur" });
   }
-  return res.status(401).json({ loggedIn: false });
 });
 
 // Écoute finale du port réseau
