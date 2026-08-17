@@ -9,7 +9,7 @@ if (!process.env.DISCORD_TOKEN) {
 
 module.exports = {
   token: process.env.DISCORD_TOKEN,
-  clientId: process.env.CLIENT_ID || "1391785070041239562",
+  clientId: process.env.CLIENT_ID || "",
   guildId: process.env.GUILD_ID || null, // Leave null for global commands
 
   // Game configuration
