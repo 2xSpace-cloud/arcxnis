@@ -263,3 +263,5 @@ app.post('/auth/verify-code', async (req, res) => {
     
     if (!verification.ok) return res.status(400).json({ error: verification.error });
 
+req.session.userId = discordId;return res.json({ success: true });} catch (error) {return res.status(500).json({ error: "Erreur serveur." });}});app.get('/api/me', (req, res) => {if (req.session && req.session.userId) {return res.json({ loggedIn: true, userId: req.session.userId });}return res.status(401).json({ loggedIn: false });});// Écoute finale du port réseauapp.listen(PORT, () => {console.log(🚀 Le serveur du Dashboard écoute sur le port ${PORT});});
+
