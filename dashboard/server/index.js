@@ -5,15 +5,22 @@ const cors = require('cors');
 const fs = require('fs');
 const https = require('https');
 const { Client, GatewayIntentBits } = require('discord.js');
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-client.login(process.env.DISCORD_TOKEN);
+
+// CORRECTION : Ajout de GuildMembers obligatoire pour pouvoir chercher l'utilisateur et lui écrire
+const client = new Client({ 
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers] 
+});
+
+client.login(process.env.DISCORD_TOKEN)
+  .then(() => console.log("🏰 Client Discord d'authentification Dashboard connecté !"))
+  .catch(err => console.error("❌ Erreur connexion Discord Dashboard :", err));
 
 // 1. Initialisation des variables d'environnement
 require('dotenv').config({ path: path.join(__dirname, '../../MedievalKingdom/MedievalKingdom/.env') });
 
 const mongoose = require('mongoose');
 
-// CORRECTION : On refuse de bloquer les requêtes indéfiniment si MongoDB rame
+// On refuse de bloquer les requêtes indéfiniment si MongoDB rame
 mongoose.set('bufferCommands', false);
 
 // Active les logs pour voir les requêtes Mongoose en direct dans Render
@@ -23,7 +30,7 @@ if (mongoose.connection.readyState === 0) {
   console.log("🔄 Initialisation de la connexion à MongoDB Atlas...");
   
   mongoose.connect(process.env.MONGO_URI, {
-    serverSelectionTimeoutMS: 5000, // Abandonne après 5 secondes si la base de données ne répond pas
+    serverSelectionTimeoutMS: 5000, 
   })
   .then(() => console.log('✅ Connexion physique à MongoDB réussie !'))
   .catch(err => {
@@ -43,7 +50,7 @@ mongoose.connection.on('connected', () => {
 const app = express();
 app.use((req, res, next) => {
   console.log(`[Requête reçue] ${req.method} ${req.url}`);
-  next(); // Très important, cela permet de passer à la suite !
+  next(); 
 });
 
 app.set('trust proxy', 1);
@@ -63,13 +70,9 @@ app.use(session({
   cookie: { secure: isProd, httpOnly: true, sameSite: isProd ? 'none' : 'lax', maxAge: 7 * 24 * 60 * 60 * 1000 }
 }));
 
-// 4. CONFIGURATION SÉCURISÉE DU FRONT-END
+// 4. CONFIGURATION DU FRONT-END
 const clientBuildPath = path.join(__dirname, '../client/dist');
-// Dans dashboard/server/index.js (Ligne ~65)
-const BOT_TOKEN = process.env.DISCORD_TOKEN || '';
 const GUILD_ID = process.env.GUILD_ID || '';
-
-// (Ajustez le nom du fichier s'il s'appelle bot.js ou main.js)
 
 // On n'active l'envoi des fichiers statiques que si le dossier compilé existe réellement
 if (fs.existsSync(clientBuildPath) && fs.existsSync(path.join(clientBuildPath, 'index.html'))) {
@@ -155,7 +158,6 @@ if (fs.existsSync(clientBuildPath) && fs.existsSync(path.join(clientBuildPath, '
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Code invalide');
 
-        // Redirection vers le profil si connecté
         window.location.href = '/profil/' + id;
       } catch(e) {
         errorDiv.innerText = e.message;
@@ -208,88 +210,7 @@ function verifyCodeEntry(discordId, inputCode) {
   return { ok: true };
 }
 
-
-// =========================================================================
-// 🔓 ROUTES D'AUTHENTIFICATION OTP (À AJOUTER)
-// =========================================================================
-
-/**
- * Route 1 : Demande de génération et d'envoi du code OTP
- */
-app.post('/auth/request-code', async (req, res) => {
-  try {
-    const { discordId } = req.body;
-    
-    if (!discordId) {
-      return res.status(400).json({ error: "L'identifiant Discord est obligatoire." });
-    }
-
-    // 1. Vérification si le joueur existe dans votre base de données MongoDB
-    const playerExists = await getPlayer(discordId);
-    if (!playerExists) {
-      return res.status(404).json({ error: "Ce compte Discord n'est pas enregistré dans le jeu Medieval Kingdom." });
-    }
-
-    // 2. Génération du code à 6 chiffres
-    const code = generateCode();
-    storeCode(discordId, code);
-    
-    console.log(`[OTP] Code généré pour ${discordId} : ${code}`);
-
-    // NOTIFICATION IMPORTANTE : 
-    // Ici, vous devrez intégrer l'envoi du message privé via votre bot Discord !
-    // Exemple temporaire : simulation de succès ou log console.
-    
-    return res.json({ success: true, message: "Code généré avec succès." });
-
-  } catch (error) {
-    console.error("Erreur dans /auth/request-code :", error);
-    return res.status(500).json({ error: "Une erreur interne est survenue sur le serveur." });
-  }
-});
-
-/**
- * Route 2 : Vérification du code saisi par l'utilisateur
- */
-app.post('/auth/verify-code', async (req, res) => {
-  try {
-    const { discordId, code } = req.body;
-
-    if (!discordId || !code) {
-      return res.status(400).json({ error: "L'ID Discord et le code sont obligatoires." });
-    }
-
-    // Validation du jeton OTP
-    const verification = verifyCodeEntry(discordId, code);
-    
-    if (!verification.ok) {
-      return res.status(400).json({ error: verification.error });
-    }
-
-    // Connexion réussie : Initialisation de la session utilisateur
-    req.session.userId = discordId;
-    
-    return res.json({ success: true, redirectUrl: `/profil/${discordId}` });
-
-  } catch (error) {
-    console.error("Erreur dans /auth/verify-code :", error);
-    return res.status(500).json({ error: "Une erreur interne est survenue." });
-  }
-});
-
-/**
- * Route Optionnelle : Vérification de session (/api/me)
- * Évite les erreurs sur le front-end lors du chargement initial
- */
-app.get('/api/me', (req, res) => {
-  if (req.session && req.session.userId) {
-    return res.json({ loggedIn: true, userId: req.session.userId });
-  }
-  return res.status(401).json({ loggedIn: false, error: "Non authentifié" });
-});
-
-
-// CORRECTION : Boucle de nettoyage complétée proprement
+// Nettoyage automatique des codes expires
 setInterval(() => {
   const now = Date.now();
   for (const [id, entry] of otpStore.entries()) {
@@ -299,13 +220,46 @@ setInterval(() => {
   }
 }, 60000);
 
-// AJOUT : Démarrage indispensable du serveur Express
-app.listen(PORT, () => {
-  console.log(`🚀 Le serveur du Dashboard écoute sur le port ${PORT}`);
+
+// =========================================================================
+// 🚀 ROUTES D'API ET TRANSMISSION DISCORD
+// =========================================================================
+
+app.post('/auth/request-code', async (req, res) => {
+  try {
+    const { discordId } = req.body;
+    if (!discordId) return res.status(400).json({ error: "L'ID Discord est requis." });
+
+    const playerExists = await getPlayer(discordId);
+    if (!playerExists) {
+      return res.status(404).json({ error: "Ce compte n'est pas enregistré en jeu." });
+    }
+
+    const code = generateCode();
+    storeCode(discordId, code);
+    console.log(`[OTP] Code généré pour ${discordId} : ${code}`);
+
+    // Envoi réel du message privé via l'API Discord
+    try {
+      const user = await client.users.fetch(discordId);
+      await user.send(`🏰 **Medieval Kingdom**\n\nVoici votre code de connexion : \`${code}\`\n*(Valable 5 minutes)*`);
+      console.log(`✉️ DM envoyé avec succès à ${discordId}`);
+    } catch (dmError) {
+      console.error(`❌ Échec envoi DM à ${discordId} :`, dmError);
+      return res.status(500).json({ error: "Le bot n'a pas pu vous envoyer de DM. Vérifiez vos paramètres de confidentialité Discord !" });
+    }
+
+    return res.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Erreur serveur." });
+  }
 });
 
-// Libère proprement les ports en cas de signal de fermeture de Render
-process.on('SIGTERM', () => {
-  console.log('⚠️ Signal SIGTERM reçu. Fermeture propre du serveur...');
-  process.exit(0);
-});
+app.post('/auth/verify-code', async (req, res) => {
+  try {
+    const { discordId, code } = req.body;
+    const verification = verifyCodeEntry(discordId, code);
+    
+    if (!verification.ok) return res.status(400).json({ error: verification.error });
+
