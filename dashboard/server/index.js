@@ -4,6 +4,9 @@ const session = require('express-session');
 const cors = require('cors');
 const fs = require('fs');
 const https = require('https');
+const { Client, GatewayIntentBits } = require('discord.js');
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+client.login(process.env.DISCORD_TOKEN);
 
 // 1. Initialisation des variables d'environnement
 require('dotenv').config({ path: path.join(__dirname, '../../MedievalKingdom/MedievalKingdom/.env') });
