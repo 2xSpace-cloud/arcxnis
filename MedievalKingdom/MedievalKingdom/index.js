@@ -107,3 +107,7 @@ process.on("uncaughtException", (error) => {
 
 // Login to Discord
 client.login(config.token);
+
+// Tout à la fin du fichier principal de votre BOT Discord
+module.exports = { client };
+
