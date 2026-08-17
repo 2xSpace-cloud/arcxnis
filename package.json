@@ -4,7 +4,7 @@
   "description": "Monorepo racine pour Medieval Kingdom",
   "main": "dashboard/server/index.js",
   "scripts": {
-    "install-all": "npm install && cd dashboard/server && npm install",
+    "install-all": "npm install && cd MedievalKingdom/MedievalKingdom && npm install && cd ../../dashboard/server && npm install",
     "start": "node dashboard/server/index.js"
   },
   "keywords": [],
